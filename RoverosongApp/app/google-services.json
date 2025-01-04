@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "104030632864",
+    "project_id": "roverosong",
+    "storage_bucket": "roverosong.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104030632864:android:fdff269f12e2c8ef6cc2c5",
+        "android_client_info": {
+          "package_name": "com.example.roverosong"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBgAqhHUBpZwPqFfCjObVKYPt_M1jfSHc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
