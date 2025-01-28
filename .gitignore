@@ -1,0 +1,63 @@
+# 빌드 및 생성된 파일들 (빌드할 때마다 바뀜)
+build/
+devel/
+install/
+
+# Catkin 관련 로그 파일
+log/
+logs/
+
+# ROS 및 CMake 캐시 파일
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+*.cmake
+Makefile
+
+# 바이너리 파일 & 실행 파일
+*.pyc
+*.pyo
+*.swp
+*.swo
+*.bak
+*.tmp
+*.log
+*.out
+*.o
+*.so
+*.a
+*.la
+*.lo
+*.obj
+*.exe
+
+# 설정 및 환경 관련 파일 (필요하면 제외)
+.vscode/
+.idea/
+*.launch
+*.bag
+*.db
+
+# ROS 패키지 빌드시 자동 생성되는 것들
+.catkin_tools/
+.catkin_workspace
+.catkin/
+rosbuild_ws/
+rosmake/
+
+# ROS에서 생성하는 메시지 및 서비스 파일
+msg_gen/
+srv_gen/
+action_gen/
+
+# Python venv (만약 가상환경 사용 시)
+venv/
+__pycache__/
+*.egg-info
+.env
+
+# Git 관련
+.DS_Store
+*.swp
+*.swo
+
