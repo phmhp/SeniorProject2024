@@ -2,6 +2,7 @@ package com.example.roverosong
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import com.google.firebase.FirebaseApp
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         // Firebase Realtime Database의 UserResults 참조
         database = FirebaseDatabase.getInstance().getReference("UserResults")
 
+        // 앱 시작 시 status 값을 '대기'로 설정
+        resetStatusInFirebase()
+
         // 전체화면 모드 설정
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -29,6 +33,17 @@ class MainActivity : AppCompatActivity() {
         // 버튼 이벤트 처리
         setupButtonListeners()
     }
+
+    private fun resetStatusInFirebase() {
+        database.child("status").setValue("대기")
+            .addOnSuccessListener {
+                Log.d("Firebase", "status 값을 '대기'로 설정")
+            }
+            .addOnFailureListener {
+                Log.e("FirebaseError", "status 초기화 실패: ${it.message}")
+            }
+    }
+
 
     private fun setupButtonListeners() {
         // 강의실 버튼 클릭 이벤트
