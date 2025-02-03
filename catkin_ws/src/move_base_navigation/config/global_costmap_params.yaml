@@ -1,0 +1,30 @@
+global_costmap:
+  global_frame: map
+  robot_base_frame: base_link
+  update_frequency: 2.0
+  publish_frequency: 2.0
+  width: 50.0  # 전역 비용맵의 너비 (m 단위)
+  height: 50.0  # 전역 비용맵의 높이
+  resolution: 0.05  # 셀 크기 (m 단위)
+  static_map: true  # 정적 맵 사용 여부
+  rolling_window: false  # false이면 정적인 전역 비용맵 사용
+  track_unknown_space: true  # 미탐색 영역을 활성화 (D* Lite 경로 탐색을 위해 필요)
+
+  plugins:
+    - {name: static_layer, type: "costmap_2d::StaticLayer"}
+    - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+    - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+
+obstacle_layer:
+  enabled: true
+  obstacle_range: 5.0
+  raytrace_range: 6.0
+  inflation_radius: 0.7  # 장애물 주변의 버퍼 크기
+
+static_layer:
+  enabled: true
+
+inflation_layer:
+  enabled: true
+  inflation_radius: 0.7
+

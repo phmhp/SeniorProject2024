@@ -1,0 +1,23 @@
+TebLocalPlannerROS:
+  odom_topic: odom
+  map_frame: odom
+  allow_init_with_backward_motion: true
+  max_vel_x: 0.5
+  max_vel_x_backwards: 0.2
+  max_vel_theta: 1.0
+  acc_lim_x: 1.0
+  acc_lim_theta: 1.5
+
+  footprint_model:
+    type: "polygon"
+    vertices: [[-0.3, -0.3], [-0.3, 0.3], [0.3, 0.3], [0.3, -0.3]]
+
+  weight_kinematics_forward_drive: 1.0
+  weight_kinematics_turning_radius: 1.0
+  weight_viapoint: 1.0
+
+  min_obstacle_dist: 0.3
+  inflation_dist: 0.5
+  include_costmap_obstacles: true
+  costmap_obstacles_behind_robot_dist: 1.0
+

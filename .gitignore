@@ -9,7 +9,6 @@ logs/
 
 # ROS 및 CMake 캐시 파일
 CMakeCache.txt
-CMakeFiles/
 cmake_install.cmake
 *.cmake
 Makefile

@@ -1,0 +1,7 @@
+DStarLitePlannerROS:
+  allow_unknown: true  # 미탐색 영역도 탐색 가능하도록 설정
+  use_dijkstra: false  # Dijkstra 대신 D* Lite 사용
+  use_quadratic: true  # 휴리스틱 최적화
+  use_grid_path: false  # 그리드 경로 단순화
+  old_navfn_behavior: false  # NAVFN 알고리즘 비활성화
+
