@@ -1,35 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_blue_background"
-    android:orientation="vertical"
-    android:gravity="center"
     android:padding="32dp">
 
+    <!-- ? 버튼을 오른쪽 상단 모서리에 배치 -->
+    <Button
+        android:id="@+id/helpButton"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:background="@drawable/round_button"
+        android:elevation="5dp"
+        android:text="?"
+        android:textColor="@color/red"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <!-- 제목 -->
     <TextView
         android:id="@+id/chatTitle"
-        android:layout_width="552dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:paddingBottom="16dp"
         android:text="Roverosong과 대화하기"
         android:textColor="@color/black"
         android:textSize="50sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginTop="60dp"/>
 
+    <!-- 로봇 아이콘 -->
     <ImageView
         android:id="@+id/robotIcon"
         android:layout_width="175dp"
         android:layout_height="181dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:contentDescription="로봇 아이콘"
         android:paddingBottom="16dp"
-        android:src="@drawable/robot1" />
+        android:src="@drawable/robot1"
+        android:layout_below="@id/chatTitle"
+        android:layout_marginTop="24dp"/>
 
-
-
+    <!-- 사용자 질문 안내 -->
     <TextView
         android:id="@+id/userSpeechText"
         android:layout_width="match_parent"
@@ -38,33 +55,24 @@
         android:padding="16dp"
         android:text="무엇이든 물어보세요 !"
         android:textColor="@color/gray_text"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:layout_below="@id/robotIcon"
+        android:layout_marginTop="20dp"/>
 
-    <Button
-        android:id="@+id/helpButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:background="@drawable/round_button"
-        android:elevation="5dp"
-        android:text="?"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        android:textStyle="bold" />
-
-
+    <!-- 로봇 응답 표시 영역 (ScrollView에 ID 추가) -->
     <ScrollView
+        android:id="@+id/responseContainer"
         android:layout_width="match_parent"
         android:layout_height="119dp"
         android:background="@drawable/chat_background"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:layout_below="@id/userSpeechText"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/responseText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:gravity="center"
             android:padding="24dp"
             android:text="로봇의 대답이 여기에 표시됩니다."
@@ -73,21 +81,18 @@
             android:textStyle="bold" />
     </ScrollView>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="40dp"/>
-
+    <!-- 음성 인식 버튼 (ScrollView를 기준으로 배치) -->
     <ImageButton
         android:id="@+id/micButton"
         android:layout_width="122dp"
         android:layout_height="123dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/mic_button_background"
         android:contentDescription="음성 인식"
         android:elevation="10dp"
         android:padding="20dp"
         android:scaleType="centerInside"
-        android:src="@android:drawable/ic_btn_speak_now" />
-
-
-</LinearLayout>
+        android:src="@android:drawable/ic_btn_speak_now"
+        android:layout_below="@id/responseContainer"
+        android:layout_marginTop="30dp"/>
+</RelativeLayout>

@@ -3,20 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- 로고 -->
     <ImageView
         android:id="@+id/logo"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="1dp"
         android:layout_marginTop="7dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
         android:src="@drawable/logo" />
 
     <ImageView
-        android:id="@+id/logo"
+        android:id="@+id/mdlogo"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
@@ -26,21 +25,25 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/md_logo" />
+
     <!-- 중간 배너 -->
+
+    <!-- 안내 시작 텍스트 -->
+
     <LinearLayout
         android:id="@+id/bannerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/guideText"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
+        android:layout_marginTop="-175dp"
+        android:layout_marginBottom="-2dp"
         android:background="#003087"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingTop="600dp"
-        android:paddingBottom="20dp">
-    </LinearLayout>
+        android:paddingBottom="20dp"></LinearLayout>
 
-    <!-- 배너 내용 -->
     <TextView
         android:id="@+id/guideText"
         android:layout_width="wrap_content"
@@ -53,7 +56,7 @@
         android:textColor="#FFFFFF"
         android:layout_marginBottom="16dp" />
 
-    <!-- 새로운 TextView -->
+    <!-- 안내 부가 텍스트 -->
     <TextView
         android:id="@+id/guideSubText"
         android:layout_width="wrap_content"
@@ -66,14 +69,28 @@
         android:textColor="#FFFFFF"
         android:layout_marginTop="10dp" />
 
+    <!-- 로봇 아이콘 -->
     <ImageView
         android:id="@+id/robotIcon"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:src="@drawable/robot1"
-        android:layout_marginTop="530dp"/>
+        android:layout_marginTop="500dp"
+        android:src="@drawable/robot1" />
 
-
+    <!-- 안내 종료 버튼 (로봇 아이콘 바로 아래에 배치) -->
+    <Button
+        android:id="@+id/endGuideButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="안내중단"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/red"
+        android:padding="12dp"
+        android:elevation="6dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/robotIcon"
+        android:layout_marginTop="20dp"/>
 </RelativeLayout>

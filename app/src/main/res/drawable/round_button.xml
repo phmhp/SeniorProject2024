@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <solid android:color="@color/blue" />
+    <solid android:color="@color/black" />
     <size android:width="50dp" android:height="50dp" />
     <corners android:radius="25dp" />
     <elevation android:radius="5dp" />
+    <stroke android:width="3dp" android:color="@color/red"/> <!-- 테두리를 빨간색으로 설정 -->
+
 </shape>
