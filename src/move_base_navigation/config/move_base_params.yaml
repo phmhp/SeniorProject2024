@@ -1,0 +1,10 @@
+base_global_planner: "srl_dstar_lite/SrlDstarLite" #전역 경로 
+base_local_planner: "teb_local_planner/TebLocalPlannerROS" #로컬 경로 
+planner_frequency: 2.0 #전역 경로 플래너 실행 빈도 (초당 횟수) -> 너무 높으면 cpu과부하 /너무 낮으면 반응 느림
+controller_frequency: 10.0 #로컬 컨트롤러 실행 빈도 (초당 횟수) -> cmd_vel 초당 업데이트 횟수 
+planner_patience: 5.0 #경로 계획 실패 시 대기시간 
+controller_patience: 3.0 #로컬 컨트롤러 정지 전 대기 시간 
+oscillation_timeout: 10.0 #진동 감지 후 실패까지 시간 (ex_장애물 회피 실패 시 발생)
+oscillation_distance: 0.2 #진동 감지 거리 기준 (m) -> 좁은 공간에서는 값 줄이고, 넓은 환경에서는 값 높이기 
+#recovery_behavior_enabled: false
+#clearing_rotation_allowed: false

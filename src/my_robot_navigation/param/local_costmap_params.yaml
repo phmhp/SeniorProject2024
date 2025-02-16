@@ -1,0 +1,32 @@
+# # local_costmap_params.yaml
+# # 로봇 주변의 환경을 실시간으로 업데이트하면서 장애물을 회피하는 데 사용
+# local_costmap: # namespace
+#   global_frame: odom # 전역 좌표 프레임 (odom : 로봇 위치를 기준으로 장애물 정보 관리)
+#   robot_base_frame: base_footprint # 로봇 기준 프레임 설정 (바닥 기준 중심점)
+#   update_frequency: 5.0 # 업데이트 (단위 : 초) (센서 데이터 기반으로 장애물 정보를 얼마나 자주 반영할지 결정)
+#   publish_frequency: 5.0 # 퍼블리시 (단위 : 초) (다른 노드에서 최신 비용 맵 정보를 가져가도록 함)
+#   transform_tolerance: 0.5 # 좌표 변환 허용 시간 (단위 : 초) (로봇이 odom 프레임과 base_footprint 프레임간의 변환을 수행할 때 최대 0.5초까지 기다림. 값이 너무 작으면 실패 가능성 크고, 너무 크면 지연 발생 가능)
+#   rolling_window: true # 움직이는 비용 맵 (true : 로봇 이동시 로컬 비용 맵이 함께 이동하며 업데이트 됨)
+#   width: 5.0 # 비용 맵의 너비 (로봇 기준 5m X 5m)
+#   height: 5.0
+#   resolution: 0.05 # 비용 맵의 해상도 (한 cell이 실제 5cm 의미, 값이 작을수록 세밀한 맵 생성, 연산량 증가)
+
+#   plugins:
+#     # 장애물 데이터를 처리하는 레이어 (센서로부터 받은 데이터를 기반으로 장애물 감지 및 비용 맵에 반영)
+#     - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+#     # 장애물 주변에 안전 구역을 설정하는 레이어 (장애물과 로봇이 일정 거리를 유지하면서 이동하도록 함)
+#     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+local_costmap:
+  global_frame: odom
+  robot_base_frame: base_footprint
+
+  update_frequency: 10.0
+  publish_frequency: 10.0
+  transform_tolerance: 0.5  
+
+  static_map: false  
+  rolling_window: true
+  width: 10
+  height: 10
+  resolution: 0.05
+  

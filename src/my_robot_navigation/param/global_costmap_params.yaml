@@ -1,0 +1,27 @@
+# # global_costmap_params.yaml
+# global_costmap:
+#   global_frame: map
+#   robot_base_frame: base_link
+#   update_frequency: 5.0
+#   publish_frequency: 5.0
+#   transform_tolerance: 0.5
+#   static_map: true
+
+#   plugins:
+#     - name: static_layer
+#       type: "costmap_2d::StaticLayer"
+#     - name: obstacle_layer
+#       type: "costmap_2d::ObstacleLayer"
+#     - name: inflation_layer
+#       type: "costmap_2d::InflationLayer"
+global_costmap:
+  global_frame: map
+  robot_base_frame: base_link
+
+  # 업데이트 주기 (Hz)
+  update_frequency: 5.0
+  publish_frequency: 2.0
+  transform_tolerance: 0.5
+
+  # 정적 맵 사용 여부
+  static_map: true
