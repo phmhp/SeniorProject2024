@@ -29,6 +29,9 @@ Makefile
 *.lo
 *.obj
 *.exe
+.zip
+.deb
+
 
 # 설정 및 환경 관련 파일 (필요하면 제외)
 .vscode/
@@ -60,3 +63,44 @@ __pycache__/
 *.swp
 *.swo
 
+# 실행 노트북 이동으로 인해 다른 파일들 제외시킴 
+Documents
+Downloads
+catkin_ws(2025.02.11)
+Desktop
+Music
+Pictures
+Public
+snap
+Templates
+Videos
+.cache
+.catkin_tools
+.config
+.dotnet
+.gitkraken
+.gk
+.gnupg
+.local
+.mozilla
+.pki
+.ros
+.rviz
+.ssh
+.thunderbird
+.vscode
+.rules
+.bash_history
+.bash_logout
+.catkin_workspace
+.wget-hsts
+.sudo_as_admin
+
+
+.99-realsense-libusb.rules
+
+.sudo_as_admin_successful
+
+*.zip
+
+*.deb

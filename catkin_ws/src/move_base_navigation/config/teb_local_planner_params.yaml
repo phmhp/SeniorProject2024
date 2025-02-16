@@ -1,23 +1,27 @@
 TebLocalPlannerROS:
-  odom_topic: odom
-  map_frame: odom
-  allow_init_with_backward_motion: true
-  max_vel_x: 0.5
-  max_vel_x_backwards: 0.2
-  max_vel_theta: 1.0
-  acc_lim_x: 1.0
-  acc_lim_theta: 1.5
+  odom_topic: odom              # 로봇의 위치 정보를 가져오는 오도메트리 토픽
+  map_frame: odom               # 로컬 경로의 기준 프레임 (로컬 맵은 odom 프레임 기반)
+  
+  allow_init_with_backward_motion: true  # 초기 경로 계획 시 후진 허용
+
+  max_vel_x: 1.0                # 최대 전진 속도 (1.0 m/s)
+  max_vel_x_backwards: 0.2      # 최대 후진 속도 (0.2 m/s)
+  max_vel_theta: 1.0            # 최대 회전 속도 (1.0 rad/s)
+  acc_lim_x: 1.0                # 직선 가속도 한계 (1.0 m/s²)
+  acc_lim_theta: 1.5            # 회전 가속도 한계 (1.5 rad/s²)
 
   footprint_model:
     type: "polygon"
-    vertices: [[-0.3, -0.3], [-0.3, 0.3], [0.3, 0.3], [0.3, -0.3]]
+    vertices: [[-0.15, -0.25], [-0.15, 0.25], [0.15, 0.25], [0.15, -0.25]]  # 로봇의 실제 외형 정의
 
-  weight_kinematics_forward_drive: 1.0
-  weight_kinematics_turning_radius: 1.0
-  weight_viapoint: 1.0
+  weight_kinematics_forward_drive: 1.5   # 직진 선호도 (값이 클수록 직진 경로 선호)
+  weight_kinematics_turning_radius: 0.5  # 회전 반경 최소화 (값이 클수록 좁은 반경 선호)
+  weight_viapoint: 1.0                   # 경유지(waypoint) 중요도
 
-  min_obstacle_dist: 0.3
-  inflation_dist: 0.5
-  include_costmap_obstacles: true
-  costmap_obstacles_behind_robot_dist: 1.0
+  min_obstacle_dist: 0.1                 # 장애물과의 최소 안전 거리 (20cm)
+  inflation_dist: 0.1                    # 장애물 주변 안전 버퍼 거리 (10cm)
+  include_costmap_obstacles: true        # 코스트맵의 장애물 정보 사용
+  costmap_obstacles_behind_robot_dist: 1.0  # 로봇 뒤쪽 장애물 감지 범위 (1m)
+  
+  optimize_every_n: 2                  # 최적화 빈도 줄이기 (매번이 아닌 2번째마다 최적화)
 
