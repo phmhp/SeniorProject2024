@@ -18,3 +18,22 @@ roslaunch robot_setup_tf robot_navigate.launch
 ```sh
 roslaunch move_base_navigation navigation.launch
 ```
+---
+## 포트고정 방법 
+```sh
+cd /etc/udev/rules.d && ls
+```
+```sh
+sudo gedit 50-myusbrules.rules
+```
+```sh
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2109", ATTRS{idProduct}=="2812", SYMLINK+="multiHub"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", SYMLINK+="robotInfo"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60",MODE="0666",SYMLINK+="rplidar"
+```
+
+기존의 다른 이름의.rules가 존재할 경우엔 위 내용 추가 적용하면 됨 
+```sh
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
