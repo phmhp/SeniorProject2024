@@ -4,15 +4,13 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /TF1/Frames1
         - /TF1/Tree1
-        - /Global Map1/Planner1
-        - /Local Map1/Planner1
-        - /DepthCloud1/Auto Size1
-        - /Path3
-        - /Map2
-        - /Polygon1
-      Splitter Ratio: 0.5
+        - /TF1/Tree1/map1
+        - /Global Map1
+        - /Global Map1/Planner1/Status1
+        - /Local Map1
+        - /Path1
+      Splitter Ratio: 0.41369864344596863
     Tree Height: 577
   - Class: rviz/Selection
     Name: Selection
@@ -64,19 +62,17 @@ Visualization Manager:
       Frames:
         All Enabled: false
         base_footprint:
-          Value: true
+          Value: false
         base_link:
           Value: true
-        camera_aligned_depth_to_color_frame:
-          Value: true
         camera_color_frame:
-          Value: true
+          Value: false
         camera_color_optical_frame:
-          Value: true
+          Value: false
         camera_depth_frame:
-          Value: true
+          Value: false
         camera_depth_optical_frame:
-          Value: true
+          Value: false
         camera_link:
           Value: true
         laser:
@@ -92,22 +88,20 @@ Visualization Manager:
       Name: TF
       Show Arrows: true
       Show Axes: true
-      Show Names: false
+      Show Names: true
       Tree:
-        camera_link:
-          camera_aligned_depth_to_color_frame:
-            camera_color_optical_frame:
-              {}
-          camera_color_frame:
-            {}
-          camera_depth_frame:
-            camera_depth_optical_frame:
-              {}
         map:
           odom:
             base_link:
               base_footprint:
                 {}
+              camera_link:
+                camera_color_frame:
+                  camera_color_optical_frame:
+                    {}
+                camera_depth_frame:
+                  camera_depth_optical_frame:
+                    {}
               laser:
                 {}
         world:
@@ -154,45 +148,39 @@ Visualization Manager:
       Transport Hint: compressed
       Unreliable: false
       Value: true
-    - Alpha: 0.699999988079071
-      Class: rviz/Map
-      Color Scheme: map
-      Draw Behind: false
-      Enabled: true
-      Name: Map
-      Topic: /map
-      Unreliable: false
-      Use Timestamp: false
-      Value: true
     - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 0; 0; 0
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 0.8894355297088623
+        Min Value: -2.09663987159729
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: AxisColor
+      Decay Time: 0
       Enabled: true
-      Head Diameter: 0.30000001192092896
-      Head Length: 0.20000000298023224
-      Length: 0.30000001192092896
-      Line Style: Lines
-      Line Width: 0.029999999329447746
-      Name: Planner Plan
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PointCloud2
+      Position Transformer: XYZ
       Queue Size: 10
-      Radius: 0.029999999329447746
-      Shaft Diameter: 0.10000000149011612
-      Shaft Length: 0.10000000149011612
-      Topic: /move_base/NavfnROS/plan
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Squares
+      Topic: /camera/depth/color/points
       Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
       Value: true
     - Class: rviz/Group
       Displays:
         - Alpha: 0.699999988079071
           Class: rviz/Map
-          Color Scheme: raw
+          Color Scheme: map
           Draw Behind: true
           Enabled: true
           Name: Costmap
@@ -200,10 +188,10 @@ Visualization Manager:
           Unreliable: false
           Use Timestamp: true
           Value: true
-        - Alpha: 1
+        - Alpha: 3
           Buffer Length: 1
           Class: rviz/Path
-          Color: 255; 0; 0
+          Color: 252; 233; 79
           Enabled: true
           Head Diameter: 0.30000001192092896
           Head Length: 0.20000000298023224
@@ -230,7 +218,7 @@ Visualization Manager:
       Displays:
         - Alpha: 1
           Class: rviz/Polygon
-          Color: 0; 58; 255
+          Color: 255; 147; 231
           Enabled: true
           Name: Polygon
           Queue Size: 10
@@ -247,10 +235,10 @@ Visualization Manager:
           Unreliable: false
           Use Timestamp: false
           Value: true
-        - Alpha: 1
+        - Alpha: 3
           Buffer Length: 1
           Class: rviz/Path
-          Color: 255; 255; 0
+          Color: 255; 147; 231
           Enabled: true
           Head Diameter: 0.30000001192092896
           Head Length: 0.20000000298023224
@@ -268,7 +256,7 @@ Visualization Manager:
           Radius: 0.029999999329447746
           Shaft Diameter: 0.10000000149011612
           Shaft Length: 0.10000000149011612
-          Topic: /move_base/TebLocalPlannerROS/local_plan
+          Topic: /move_base/TebLocalPlannerROS/global_plan
           Unreliable: false
           Value: true
       Enabled: true
@@ -306,85 +294,51 @@ Visualization Manager:
       Topic: /move_base_simple/goal
       Unreliable: false
       Value: true
-    - Alpha: 1
-      Auto Size:
-        Auto Size Factor: 1
-        Value: true
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/DepthCloud
-      Color: 255; 255; 255
-      Color Image Topic: ""
-      Color Transformer: RGB8
-      Color Transport Hint: raw
-      Decay Time: 0
-      Depth Map Topic: /camera/aligned_depth_to_color/image_raw
-      Depth Map Transport Hint: compressedDepth
+    - Alpha: 0.699999988079071
+      Class: rviz/Map
+      Color Scheme: map
+      Draw Behind: false
       Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Min Color: 0; 0; 0
-      Name: DepthCloud
-      Occlusion Compensation:
-        Occlusion Time-Out: 30
-        Value: false
-      Position Transformer: XYZ
-      Queue Size: 5
-      Selectable: true
-      Size (Pixels): 3
-      Style: Flat Squares
-      Topic Filter: true
-      Use Fixed Frame: true
-      Use rainbow: true
+      Name: Map
+      Topic: /map
+      Unreliable: false
+      Use Timestamp: false
       Value: true
-    - Class: rviz/Marker
-      Enabled: false
-      Marker Topic: /move_base/SrlDstarLite/dstar_path_dedicated
-      Name: Marker
-      Namespaces:
-        {}
-      Queue Size: 100
-      Value: false
-    - Alpha: 10
+    - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
       Color: 252; 233; 79
-      Enabled: false
+      Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
       Length: 0.30000001192092896
       Line Style: Lines
       Line Width: 0.029999999329447746
-      Name: Path
+      Name: Planner Plan
       Offset:
         X: 0
         Y: 0
         Z: 0
-      Pose Color: 252; 233; 79
-      Pose Style: Arrows
+      Pose Color: 255; 85; 255
+      Pose Style: None
       Queue Size: 10
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
       Topic: /move_base/SrlDstarLite/dstar_planner_path
       Unreliable: false
-      Value: false
+      Value: true
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
-      Color: 252; 233; 79
-      Enabled: false
+      Color: 255; 147; 231
+      Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
       Length: 0.30000001192092896
       Line Style: Lines
       Line Width: 0.029999999329447746
-      Name: Path
+      Name: Planner Plan
       Offset:
         X: 0
         Y: 0
@@ -397,26 +351,18 @@ Visualization Manager:
       Shaft Length: 0.10000000149011612
       Topic: /move_base/TebLocalPlannerROS/global_plan
       Unreliable: false
-      Value: false
-    - Class: rviz/Marker
-      Enabled: false
-      Marker Topic: /move_base/TebLocalPlannerROS/teb_markers
-      Name: Marker
-      Namespaces:
-        {}
-      Queue Size: 100
-      Value: false
-    - Alpha: 10
+      Value: true
+    - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
-      Color: 184; 177; 255
+      Color: 173; 127; 168
       Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
       Length: 0.30000001192092896
       Line Style: Lines
       Line Width: 0.029999999329447746
-      Name: Path
+      Name: Planner Plan
       Offset:
         X: 0
         Y: 0
@@ -430,23 +376,28 @@ Visualization Manager:
       Topic: /move_base/TebLocalPlannerROS/local_plan
       Unreliable: false
       Value: true
-    - Alpha: 0.699999988079071
-      Class: rviz/Map
-      Color Scheme: map
-      Draw Behind: false
+    - Alpha: 3
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 252; 233; 79
       Enabled: true
-      Name: Map
-      Topic: /move_base/local_costmap/costmap
-      Unreliable: false
-      Use Timestamp: false
-      Value: true
-    - Alpha: 1
-      Class: rviz/Polygon
-      Color: 239; 41; 41
-      Enabled: true
-      Name: Polygon
+      Head Diameter: 0.30000001192092896
+      Head Length: 0.20000000298023224
+      Length: 0.30000001192092896
+      Line Style: Lines
+      Line Width: 0.029999999329447746
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
       Queue Size: 10
-      Topic: /move_base/local_costmap/footprint
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.10000000149011612
+      Shaft Length: 0.10000000149011612
+      Topic: /move_base/SrlDstarLite/dstar_planner_path
       Unreliable: false
       Value: true
   Enabled: true
@@ -482,10 +433,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 52.63568878173828
+      Scale: 35.97087860107422
       Target Frame: <Fixed Frame>
-      X: -3.8802833557128906
-      Y: -6.329707622528076
+      X: 1.0024968385696411
+      Y: -9.687995910644531
     Saved: ~
 Window Geometry:
   Displays:

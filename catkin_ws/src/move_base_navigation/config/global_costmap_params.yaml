@@ -1,29 +1,39 @@
 global_costmap:
-  global_frame: map #기준 프레임 
-  robot_base_frame: base_link #로봇 기준 프레임
-  update_frequency: 2.0 #비용맵 업데이트 주기 (Hz)
-  publish_frequency: 2.0 #비용맵 발행 주기 (Hz)
-  #width: 50.0  # 전역 비용맵의 가로 길이 (m)
-  #height: 50.0  # 전역 비용맵의 세로 길이 (m)
-  #resolution: 0.05  # 그리드 셀 크기 (m 단위)
-  static_map: true  # 정적 맵 사용 여부 (SLAM아니면 true)
-  track_unknown_space: false  #  미탐색 구역을 피하도록 설정
+  global_frame: map
+  robot_base_frame: base_link
+  update_frequency: 2.0
+  publish_frequency: 2.0
+  static_map: true
+  track_unknown_space: false
 
   plugins:
     - {name: static_layer, type: "costmap_2d::StaticLayer"}
     - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
 
-#obstacle_layer:
-#  enabled: true #장애물 레이어 활성화
-#  obstacle_range: 2.0 #장애물 인식 최대 거리 (m)
-#  raytrace_range: 6.0 #장애물 트레이싱 (자유 공간 탐지) 범위 (m)
-#  #inflation_radius: 0.1  # 장애물 주변 안전 거리 (버퍼)
+obstacle_layer:
+  enabled: true
+  track_unknown_space: false
+  footprint_clearing_enabled: true
+  max_obstacle_height: 2.0
 
-static_layer:
-  enabled: true # 정적 맵 레이어 활성화
+  observation_sources: laser_scan_sensor depth_camera_sensor
 
-inflation_layer:
-  enabled: false
-  inflation_radius: 0.05 # 장애물 주변의 팽창 반경
+  laser_scan_sensor:  
+    sensor_frame: laser
+    data_type: LaserScan
+    topic: /scan
+    marking: true
+    clearing: true
+    obstacle_range: 2.0
+    raytrace_range: 3.0
+
+  depth_camera_sensor:  
+    sensor_frame: camera_link
+    data_type: PointCloud2
+    topic: /camera/depth/color/points
+    marking: true
+    clearing: true
+    obstacle_range: 2.5
+    raytrace_range: 3.5
 

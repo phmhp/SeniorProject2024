@@ -23,7 +23,7 @@ CMD_TOPIC = "/cmd_vel"  # TurtleBot3 teleop의 기본 토픽 이름
 ODOM_TOPIC= "/odom"
 
 # 기본 설정
-prm.sPort = '/dev/ttyUSB0'  # 시리얼 포트
+prm.sPort = '/dev/robotInfo'  # 시리얼 포트
 prm.sVelo = 57600  # 통신 속도
 prm.sID = 1  # 로봇 ID
 
