@@ -1,0 +1,37 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="map_file" default="$(find my_robot_navigation)/Maps/0201.yaml" />
+  <arg name="scan_topic" value="/scan"/>
+  <arg name="initial_pose_x" value="1.0"/>
+  <arg name="initial_pose_y" value="1.0"/>
+  <arg name="initial_pose_a" value="0.0"/>
+
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+  <node pkg="tf" type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 world map 10"/>
+
+  <!-- Include RPLidar A2M8 -->
+  <include file="$(find rplidar_ros)/launch/rplidar_a2m8.launch" />
+
+  <!-- RViz 실행 -->
+  <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" args="-d $(find my_robot_navigation)/rviz/default2.rviz"/>
+
+  <!-- AMCL -->
+  <include file="$(find my_robot_navigation)/launch/amcl.launch">   
+    <arg name="scan_topic" value="$(arg scan_topic)"/>
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+
+  <!-- Move Base 실행 -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <rosparam file="$(find my_robot_navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find my_robot_navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find my_robot_navigation)/param/global_costmap_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find my_robot_navigation)/param/local_costmap_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find my_robot_navigation)/param/move_base_params.yaml" command="load" />
+    <rosparam file="$(find my_robot_navigation)/param/dwa_local_planner_params.yaml" command="load" />
+  </node>
+</launch>

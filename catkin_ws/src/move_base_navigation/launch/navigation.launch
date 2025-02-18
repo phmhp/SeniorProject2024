@@ -1,0 +1,52 @@
+<launch>
+  <!-- ====== Arguments ====== -->
+  <arg name="map_file" default="$(find move_base_navigation)/maps/map.yaml" />
+  <arg name="scan_topic" value="/scan"/> 
+  <arg name="depth_topic" value="/camera/depth/color/points"/>
+
+  <!-- ====== 센서 실행 (LiDAR & Depth 카메라) ====== -->
+  <include file="$(find rplidar_ros)/launch/rplidar_symlink.launch" />
+
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+    <arg name="align_depth" value="false" />
+    <arg name="enable_color" value="true" />
+    <arg name="filters" value="pointcloud"/>
+  </include>
+
+  <!-- ====== 맵 서버 실행 ====== -->
+  <include file="$(find move_base_navigation)/launch/map_server.launch" />
+
+  <!-- ====== AMCL (측위) 실행 ====== -->
+  <include file="$(find move_base_navigation)/launch/amcl.launch">
+    <arg name="scan_topic" value="$(arg scan_topic)"/>
+  </include>
+
+  <!-- ====== Costmap 및 Move_Base 설정 먼저 로드 ====== -->
+  <rosparam file="$(find move_base_navigation)/config/costmap_common_params.yaml" command="load"/>
+  <rosparam file="$(find move_base_navigation)/config/global_costmap_params.yaml" command="load" ns="global_costmap"/>
+  <rosparam file="$(find move_base_navigation)/config/local_costmap_params.yaml" command="load" ns="local_costmap"/>
+  <rosparam file="$(find move_base_navigation)/config/move_base_params.yaml" command="load"/>
+
+  <!-- ====== Move_Base 실행 ====== -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <!-- 센서 데이터 매핑 -->
+    <param name="observation_sources" value="laser_scan_sensor depth_camera_sensor"/>
+    
+    <param name="laser_scan_sensor/topic" value="$(arg scan_topic)"/>
+    <param name="laser_scan_sensor/sensor_frame" value="laser"/>
+    <param name="laser_scan_sensor/data_type" value="LaserScan"/>
+    <param name="laser_scan_sensor/marking" value="true"/>
+    <param name="laser_scan_sensor/clearing" value="true"/>
+    
+    <param name="depth_camera_sensor/topic" value="$(arg depth_topic)"/>
+    <param name="depth_camera_sensor/sensor_frame" value="camera_link"/>
+    <param name="depth_camera_sensor/data_type" value="PointCloud2"/>
+    <param name="depth_camera_sensor/marking" value="true"/>
+    <param name="depth_camera_sensor/clearing" value="true"/>
+  </node>
+
+  <!-- ====== RViz 실행 ====== -->
+  <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true"
+        args="-d $(find move_base_navigation)/rviz/visualize_data.rviz"/>
+</launch>
+

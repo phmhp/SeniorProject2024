@@ -36,7 +36,6 @@ Makefile
 # 설정 및 환경 관련 파일 (필요하면 제외)
 .vscode/
 .idea/
-*.launch
 *.bag
 *.db
 

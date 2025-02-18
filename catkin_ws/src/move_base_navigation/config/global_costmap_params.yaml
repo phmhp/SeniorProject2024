@@ -1,4 +1,5 @@
 global_costmap:
+  footprint: [[-0.2, -0.2], [-0.2, 0.2], [0.2, 0.2], [0.2, -0.2]]
   global_frame: map
   robot_base_frame: base_link
   update_frequency: 2.0
