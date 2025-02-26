@@ -6,9 +6,11 @@
   <!-- move_base -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     
-    <!-- 로컬 및 글로벌 플래너 설정 -->
-    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <!-- 전역 플래너를 A*로 설정 -->
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
 
+    <!-- 로컬 플래너를 TEB로 설정 -->
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
 
     <!-- 글로벌 및 로컬 코스트맵 설정 -->
     <rosparam file="$(find my_robot_navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
@@ -19,8 +21,11 @@
     <!-- move_base의 기본 매개변수 설정 -->
     <rosparam file="$(find my_robot_navigation)/param/move_base_params.yaml" command="load" />
 
-    <!-- DWA 로컬 플래너 설정 -->
-    <rosparam file="$(find my_robot_navigation)/param/dwa_local_planner_params.yaml" command="load" />
+    <!-- A* 설정 파일 추가 -->
+    <rosparam file="$(find my_robot_navigation)/param/global_planner_params.yaml" command="load" />
+
+    <!-- 기존 DWA 설정 대신 TEB 설정 파일 사용 -->
+    <rosparam file="$(find my_robot_navigation)/param/teb_local_planner_params.yaml" command="load" />
 
     <!-- 토픽 리매핑 -->
     <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>

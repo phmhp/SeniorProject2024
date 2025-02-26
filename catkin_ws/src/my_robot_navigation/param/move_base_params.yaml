@@ -1,12 +1,12 @@
 shutdown_costmaps: false  # 코스트맵을 비활성화하지 않음
-controller_frequency: 5.0  # 컨트롤러가 명령을 생성하는 주기 (Hz)
+controller_frequency: 20.0  # 컨트롤러가 명령을 생성하는 주기 (Hz)
 
-planner_patience: 5.0  # 글로벌 플래너가 경로를 생성하지 못할 때까지 대기 시간 (초)
+planner_patience: 15.0  # 글로벌 플래너가 경로를 생성하지 못할 때까지 대기 시간 (초)
 controller_patience: 15.0  # 로컬 컨트롤러가 장애물 회피를 완료하지 못할 때까지 대기 시간 (초)
 
 conservative_reset_dist: 3.0  # 로봇이 장애물 주변에서 코스트맵을 재설정하는 거리 (m)
-planner_frequency: 5.0  # 글로벌 플래너가 경로를 생성하는 빈도 (Hz)
+planner_frequency: 10.0  # 글로벌 플래너가 경로를 생성하는 빈도 (Hz)
 
-oscillation_timeout: 10.0  # 진동이 발생했을 때 멈추기 전 대기 시간 (초)
+oscillation_timeout: 30.0  # 진동이 발생했을 때 멈추기 전 대기 시간 (초)
 oscillation_distance: 0.2  # 진동이 발생했다고 간주되는 최소 이동 거리 (m)
 # recovery_behavior_enabled: false

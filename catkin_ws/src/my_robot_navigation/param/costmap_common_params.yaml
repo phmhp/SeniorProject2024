@@ -1,13 +1,43 @@
+plugins: # 코스트맵 레이어 설정 
+  - name: static_layer
+    type: "costmap_2d::StaticLayer"
+  - name: obstacle_layer
+    type: "costmap_2d::ObstacleLayer"
+  - name: inflation_layer
+    type: "costmap_2d::InflationLayer"
+
 obstacle_range: 3.0
-raytrace_range: 3.5
+raytrace_range: 3.0
 
-# 로봇의 크기를 정의하는 footprint 설정
 footprint: [[-0.23, -0.19], [-0.23, 0.19], [0.23, 0.19], [0.23, -0.19]]
-# footprint_padding: 0.02
 
-inflation_radius: 1.0
-cost_scaling_factor: 3.0
+obstacle_layer: # 동적 장애물 탐지
+  enabled: true # 장애물 레이어 활성화 
+  obstacle_range: 3.0 # 센서가 장애물 인식할 거리 (m)
+  raytrace_range: 3.0
+  max_obstacle_height: 2.0 # 2m이하의 장애물만 탐지 
+  combination_method: 1 # 다른 costmap 레잉와 장애물 데이터를 합칠 때의 방식
+  footprint_clearing_enabled: true  # 로봇이 지나간 자리에서 장애물 정보 지우고 업데이트
 
-map_type: costmap
-observation_sources: scan
-scan: {sensor_frame: base_scan, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+  observation_sources: scan depth_camera
+  scan:
+    data_type: LaserScan
+    topic: /scan
+    sensor_frame: laser
+    marking: true
+    clearing: true
+
+  depth_camera:
+    data_type: PointCloud2
+    # topic: /camera/depth/image_rect_raw
+    topic: /camera/depth/points
+    sensor_frame: camera_depth_optical_frame  # Depth 카메라의 frame_id 확인 후 설정
+    marking: true
+    clearing: true
+
+
+
+inflation_layer: # 장애물 근처 경로 제한
+  enabled: true
+  inflation_radius: 1.0  # 장애물 근처에서 경로를 제한하는 거리 (m)
+  cost_scaling_factor: 3.0 # 장애물 가까이 접근할수록 비용 증가율 (값 크면 근처로 가는 경로를 더 강하게 제한)

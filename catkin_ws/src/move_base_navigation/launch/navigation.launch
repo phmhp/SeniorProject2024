@@ -20,30 +20,38 @@
   <include file="$(find move_base_navigation)/launch/amcl.launch">
     <arg name="scan_topic" value="$(arg scan_topic)"/>
   </include>
-
-  <!-- ====== Costmap 및 Move_Base 설정 먼저 로드 ====== -->
-  <rosparam file="$(find move_base_navigation)/config/costmap_common_params.yaml" command="load"/>
-  <rosparam file="$(find move_base_navigation)/config/global_costmap_params.yaml" command="load" ns="global_costmap"/>
-  <rosparam file="$(find move_base_navigation)/config/local_costmap_params.yaml" command="load" ns="local_costmap"/>
-  <rosparam file="$(find move_base_navigation)/config/move_base_params.yaml" command="load"/>
-
-  <!-- ====== Move_Base 실행 ====== -->
+  
+  
+  <!-- Move Base 실행 -->
   <node pkg="move_base" type="move_base" name="move_base" output="screen">
-    <!-- 센서 데이터 매핑 -->
-    <param name="observation_sources" value="laser_scan_sensor depth_camera_sensor"/>
-    
-    <param name="laser_scan_sensor/topic" value="$(arg scan_topic)"/>
-    <param name="laser_scan_sensor/sensor_frame" value="laser"/>
-    <param name="laser_scan_sensor/data_type" value="LaserScan"/>
-    <param name="laser_scan_sensor/marking" value="true"/>
-    <param name="laser_scan_sensor/clearing" value="true"/>
-    
-    <param name="depth_camera_sensor/topic" value="$(arg depth_topic)"/>
-    <param name="depth_camera_sensor/sensor_frame" value="camera_link"/>
-    <param name="depth_camera_sensor/data_type" value="PointCloud2"/>
-    <param name="depth_camera_sensor/marking" value="true"/>
-    <param name="depth_camera_sensor/clearing" value="true"/>
+  <!-- A*를 전역 플래너로 설정 -->
+  <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+  
+  <!-- TEB를 로컬 플래너로 설정 -->
+  <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+  
+  <!-- 코스트맵 설정 -->
+  <rosparam file="$(find move_base_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  <rosparam file="$(find move_base_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+  <rosparam file="$(find move_base_navigation)/config/global_costmap_params.yaml" command="load" ns="global_costmap" />
+  <rosparam file="$(find move_base_navigation)/config/local_costmap_params.yaml" command="load" ns="local_costmap" />
+  
+  <!-- Move Base의 기본 매개변수 -->
+  <rosparam file="$(find move_base_navigation)/config/move_base_params.yaml" command="load" />
+  <!-- D* lite 관련 설정 -->
+  <rosparam file="$(find move_base_navigation)/config/global_costmap_params.yaml" command="load" />
+  
+  <!-- TEB 관련 설정 -->
+  <rosparam file="$(find move_base_navigation)/config/teb_local_planner_params.yaml" command="load" />
   </node>
+ <!-- costmap_converter 노드 추가 (네비게이션 노드들과 같은 레벨에 추가) -->
+<node pkg="costmap_converter" type="standalone_converter" name="costmap_converter_node" output="screen">
+  <!-- 사용 가능한 플러그인으로 변경 -->
+  <param name="converter_plugin" value="costmap_converter::CostmapToPolygonsDBSConcaveHull"/>
+  <param name="obstacle_array_topic" value="/move_base/TebLocalPlannerROS/obstacles"/>
+  <!-- 필요시 추가 파라미터 설정 -->
+  <param name="/tf/cache_time" value="10.0" />
+</node>
 
   <!-- ====== RViz 실행 ====== -->
   <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true"

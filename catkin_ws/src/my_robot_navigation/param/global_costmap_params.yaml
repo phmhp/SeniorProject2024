@@ -1,27 +1,68 @@
-# # global_costmap_params.yaml
-# global_costmap:
-#   global_frame: map
-#   robot_base_frame: base_link
-#   update_frequency: 5.0
-#   publish_frequency: 5.0
-#   transform_tolerance: 0.5
-#   static_map: true
-
-#   plugins:
-#     - name: static_layer
-#       type: "costmap_2d::StaticLayer"
-#     - name: obstacle_layer
-#       type: "costmap_2d::ObstacleLayer"
-#     - name: inflation_layer
-#       type: "costmap_2d::InflationLayer"
 global_costmap:
   global_frame: map
   robot_base_frame: base_link
 
-  # 업데이트 주기 (Hz)
-  update_frequency: 5.0
-  publish_frequency: 2.0
+  # TF 변환 허용 시간
   transform_tolerance: 0.5
 
-  # 정적 맵 사용 여부
-  static_map: true
+  # 업데이트 주기 (Hz)
+  update_frequency: 10.0    # Costmap 내부 업데이트 빈도
+  publish_frequency: 10.0    # Costmap 토픽(RViz 시각화) 퍼블리시 빈도
+
+  static_map: true          # 정적 맵 사용
+  rolling_window: false      # 전역 코스트맵은 보통 rolling_window=false
+
+  width: 30                # 맵 상에서 고려할 범위. 보통 전역 맵은 더 크게 설정
+  height: 30
+  resolution: 0.05          # 맵 해상도(5cm). CPU부담 & 정밀도 고려해 조정
+
+  # ────────────────────────────────────────────────────────────────────
+  # 플러그인 설정 (정적 맵 + 장애물 레이어 + 인플레이션 레이어)
+  # ────────────────────────────────────────────────────────────────────
+  plugins:
+    - name: static_layer
+      type: "costmap_2d::StaticLayer"
+    - name: obstacle_layer
+      type: "costmap_2d::ObstacleLayer"
+    - name: inflation_layer
+      type: "costmap_2d::InflationLayer"
+
+  # ────────────────────────────────────────────────────────────────────
+  # 장애물 레이어 설정
+  # 정적 맵 위에 센서(옵션) 반영하여 장애물을 업데이트할 수도 있음
+  # ────────────────────────────────────────────────────────────────────
+  obstacle_layer:
+    enabled: true
+    obstacle_range: 3.0         # 장애물로 인식할 최대 범위
+    raytrace_range: 3.0         # 센서 클리어링에 사용할 최대 범위
+    combination_method: 1
+    origin_z: 0.0
+    z_resolution: 0.2
+    z_voxels: 2
+    footprint_clearing_enabled: true
+
+    observation_sources: scan depth_camera
+    scan:
+      data_type: LaserScan
+      topic: /scan
+      marking: true
+      clearing: true
+      sensor_frame: laser     
+
+    depth_camera:
+      data_type: PointCloud2
+      topic: /camera/depth/points
+      sensor_frame: camera_depth_optical_frame
+      marking: true
+      clearing: true 
+
+  # ────────────────────────────────────────────────────────────────────
+  # 인플레이션 레이어 설정
+  # 장애물 주변을 부풀려 로봇이 충분히 떨어져 다니도록 함
+  # ────────────────────────────────────────────────────────────────────
+  # 인플레이션 레이어 설정
+  inflation_layer: # 장애물 근처 경로 제한
+    enabled: true
+    inflation_radius: 1.0  # 장애물 근처에서 경로를 제한하는 거리 (m)
+    cost_scaling_factor: 5.0 # 장애물 가까이 접근할수록 비용 증가율 (값 크면 근처로 가는 경로를 더 강하게 제한)
+
