@@ -1,30 +1,56 @@
 <launch>
-  <!-- Arguments -->
+  <!-- 실행 인자 설정 -->
+  <arg name="map_file" default="$(find my_robot_navigation)/Maps/b210.yaml" />
+  <arg name="scan_topic" value="/scan"/>
   <arg name="cmd_vel_topic" default="/cmd_vel" />
   <arg name="odom_topic" default="odom" />
+  <arg name="initial_pose_x" value="1.0"/>
+  <arg name="initial_pose_y" value="1.0"/>
+  <arg name="initial_pose_a" value="0.0"/>
 
-  <!-- move_base -->
-  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    
-    <!-- 전역 플래너를 A*로 설정 -->
+  <!-- Map Server 실행 -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <!-- RPLiDAR A2M8 실행 -->
+  <include file="$(find rplidar_ros)/launch/rplidar_a2m8.launch" />
+
+  <!--  Depth Camera 실행 -->
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch" />
+
+  <!-- AMCL 실행 (위치 추정) -->
+  <include file="$(find my_robot_navigation)/launch/amcl.launch">   
+    <arg name="scan_topic" value="$(arg scan_topic)"/>
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+
+  <!-- RViz 실행 -->
+  <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" 
+        args="-d $(find my_robot_navigation)/rviz/default2.rviz"/>
+
+  <!-- move_base 실행 -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+
+    <!-- A*를 전역 플래너로 설정 -->
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
-
-    <!-- 로컬 플래너를 TEB로 설정 -->
+    
+    <!-- TEB를 로컬 플래너로 설정 -->
     <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
 
-    <!-- 글로벌 및 로컬 코스트맵 설정 -->
+    <!-- 코스트맵 설정 -->
     <rosparam file="$(find my_robot_navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find my_robot_navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find my_robot_navigation)/param/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find my_robot_navigation)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find my_robot_navigation)/param/global_costmap_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find my_robot_navigation)/param/local_costmap_params.yaml" command="load" ns="local_costmap" />
 
-    <!-- move_base의 기본 매개변수 설정 -->
+    <!-- Move Base 기본 설정 -->
     <rosparam file="$(find my_robot_navigation)/param/move_base_params.yaml" command="load" />
 
-    <!-- A* 설정 파일 추가 -->
+    <!-- A* 관련 설정 -->
     <rosparam file="$(find my_robot_navigation)/param/global_planner_params.yaml" command="load" />
 
-    <!-- 기존 DWA 설정 대신 TEB 설정 파일 사용 -->
+    <!-- TEB 관련 설정 -->
     <rosparam file="$(find my_robot_navigation)/param/teb_local_planner_params.yaml" command="load" />
 
     <!-- 토픽 리매핑 -->
@@ -32,4 +58,5 @@
     <remap from="odom" to="$(arg odom_topic)"/>
 
   </node>
+
 </launch>
