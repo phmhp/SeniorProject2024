@@ -1,40 +1,31 @@
 global_costmap:
-  footprint: [[-0.2, -0.2], [-0.2, 0.2], [0.2, 0.2], [0.2, -0.2]]
+  #footprint: [[-0.2, -0.2], [-0.2, 0.2], [0.2, 0.2], [0.2, -0.2]]
   global_frame: map
   robot_base_frame: base_link
-  update_frequency: 2.0
-  publish_frequency: 2.0
-  static_map: true
-  track_unknown_space: false
+  
+  # TF 변환 허용 시간
+  transform_tolerance: 0.5
+  
+  # 업데이트 주기 (Hz)
+  update_frequency: 10.0    # Costmap 내부 업데이트 빈도
+  publish_frequency: 10.0    # Costmap 토픽(RViz 시각화) 퍼블리시 빈도
+  
+  static_map: true          # 정적 맵 사용
+  rolling_window: false      # 전역 코스트맵은 보통 rolling_window=false
+  track_unknown_space: true  # <== 필수!
+  
+  width: 100           # 맵 상에서 고려할 범위. 보통 전역 맵은 더 크게 설정
+  height: 100
+  resolution: 0.05          # 맵 해상도(5cm). CPU부담 & 정밀도 고려해 조정
+  origin_x: 0 # 센서가 포함되도록 변경
+  origin_y: 0
 
   plugins:
     - {name: static_layer, type: "costmap_2d::StaticLayer"}
     - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
-
-obstacle_layer:
-  enabled: true
-  track_unknown_space: false
-  footprint_clearing_enabled: true
-  max_obstacle_height: 2.0
-
-  observation_sources: laser_scan_sensor depth_camera_sensor
-
-  laser_scan_sensor:  
-    sensor_frame: laser
-    data_type: LaserScan
-    topic: /scan
-    marking: true
-    clearing: true
-    obstacle_range: 2.0
-    raytrace_range: 3.0
-
-  depth_camera_sensor:  
-    sensor_frame: camera_link
-    data_type: PointCloud2
-    topic: /camera/depth/color/points
-    marking: true
-    clearing: true
-    obstacle_range: 2.5
-    raytrace_range: 3.5
-
+  
+  inflation_layer: # 장애물 근처 경로 제한
+    enabled: true
+    inflation_radius: 0.5  # 장애물 근처에서 경로를 제한하는 거리 (m)
+    cost_scaling_factor: 3.0 # 장애물 가까이 접근할수록 비용 증가율 (값 크면 근처로 가는 경로를 더 강하게 제한)

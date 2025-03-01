@@ -1,8 +1,14 @@
-costmap:
-  transform_tolerance: 2.0
-  observation_sources: laser_scan_sensor depth_camera_sensor
+obstacle_range: 3.0
+raytrace_range: 3.5
+footprint: [[-0.23, -0.19], [-0.23, 0.19], [0.23, 0.19], [0.23, -0.19]]
+robot_radius: 0.22
+inflation_radius: 1.0
+publish_voxel_map: true
 
-  laser_scan_sensor:
+transform_tolerance: 1.0
+observation_sources: laser_scan_sensor depth_camera_sensor
+
+laser_scan_sensor:
     sensor_frame: laser
     data_type: LaserScan
     topic: /scan
@@ -10,9 +16,9 @@ costmap:
     clearing: true
     obstacle_range: 2.0
     raytrace_range: 3.0
-    expected_update_rate: 10.0
+    expected_update_rate: 5.0
 
-  depth_camera_sensor:
+depth_camera_sensor:
     sensor_frame: camera_depth_optical_frame
     data_type: PointCloud2
     topic: /camera/depth/color/points
@@ -20,5 +26,13 @@ costmap:
     clearing: true
     obstacle_range: 2.0
     raytrace_range: 3.0
-    expected_update_rate: 15.0
+    expected_update_rate: 5.0
 
+obstacle_layer:
+  enabled: true
+  track_unknown_space: true  # 소문자로 수정
+  obstacle_range: 3.0
+  raytrace_range: 3.5
+  footprint_clearing_enabled: true
+  max_obstacle_height: 2.0
+  observation_sources: laser_scan_sensor depth_camera_sensor
