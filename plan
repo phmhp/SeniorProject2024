@@ -1,0 +1,13 @@
+앱 -> 목적지
+
+목적지에 맞는 지도 불러오기
+ 
+localization (어떻게 할지 ..)
+
+목적지 좌표로 goal 생성, 경로 생성
+
+전진 후진 파악
+전진 -> front bumper check
+후진 -> rear bumper, ultrasonic sensors check
+
+목적지 도달 성공 -> 도착지에서 반바퀴 회전 -> localization -> 시작점 goal로 잡고 돌아감

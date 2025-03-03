@@ -1,28 +1,32 @@
 <launch>
     <param name="use_sim_time" value="false"/>
-  
+
     <!-- ====== Arguments ====== -->
-    <arg name="map_file" default="$(find move_base_navigation)/maps/map.yaml" />
-    <arg name="scan_topic" value="/scan"/> 
+    <arg name="map_file" default="$(find move_base_navigation)/maps/map.yaml"/>
+    <arg name="scan_topic" value="/scan"/>
     <arg name="depth_topic" value="/camera/depth/color/points"/>
+
+    <arg name="cmd_vel_topic" default="/cmd_vel"/>
+    <arg name="odom_topic" default="odom"/>
+
     <arg name="initial_pose_x" value="1.0"/>
     <arg name="initial_pose_y" value="1.0"/>
     <arg name="initial_pose_a" value="0.0"/>
 
     <!-- ====== 센서 실행 (LiDAR & Depth 카메라) ====== -->
-    <include file="$(find rplidar_ros)/launch/rplidar_symlink.launch" />
+    <include file="$(find rplidar_ros)/launch/rplidar_symlink.launch"/>
 
     <include file="$(find realsense2_camera)/launch/rs_camera.launch">
-        <arg name="align_depth" value="false" />
-        <arg name="enable_color" value="true" />
+        <arg name="align_depth" value="false"/>
+        <arg name="enable_color" value="true"/>
         <arg name="filters" value="pointcloud"/>
     </include>
 
     <!-- ====== 맵 서버 실행 ====== -->
-    <include file="$(find move_base_navigation)/launch/map_server.launch" />
+    <include file="$(find move_base_navigation)/launch/map_server.launch"/>
 
     <!-- ====== AMCL (측위) 실행 ====== -->
-    <include file="$(find my_robot_navigation)/launch/amcl.launch">   
+    <include file="$(find my_robot_navigation)/launch/amcl.launch">
         <arg name="scan_topic" value="$(arg scan_topic)"/>
         <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
         <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
@@ -32,37 +36,31 @@
     <!-- Move Base 실행 -->
     <node pkg="move_base" type="move_base" name="move_base" output="screen">
         <!-- D* Lite 를 전역 플래너로 설정 -->
-        <param name="base_global_planner" value="srl_dstar_lite/SrlDstarLite" />
-  
+        <param name="base_global_planner" value="srl_dstar_lite/SrlDstarLite"/>
+
         <!-- TEB를 로컬 플래너로 설정 -->
-        <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+        <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS"/>
 
         <!-- costmap 설정 -->
-        <rosparam file="$(find move_base_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
-        <rosparam file="$(find move_base_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
-        <rosparam file="$(find my_robot_navigation)/param/global_costmap_params.yaml" command="load" ns="global_costmap" />
-        <rosparam file="$(find move_base_navigation)/config/local_costmap_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find move_base_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find move_base_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find move_base_navigation)/config/global_costmap_params.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find move_base_navigation)/config/local_costmap_params.yaml" command="load" ns="local_costmap"/>
 
         <!-- Move Base의 기본 매개변수 -->
-        <rosparam file="$(find my_robot_navigation)/param/move_base_params.yaml" command="load" />
+        <rosparam file="$(find move_base_navigation)/config/move_base_params.yaml" command="load"/>
 
-        <!-- D* lite 관련 설정 -->
-        <rosparam file="$(find move_base_navigation)/config/dstar_lite_planner_params.yaml" command="load" />
+        <!-- D* Lite 관련 설정 -->
+        <rosparam file="$(find move_base_navigation)/config/dstar_lite_planner_params.yaml" command="load"/>
 
         <!-- TEB 관련 설정 -->
-        <rosparam file="$(find move_base_navigation)/config/teb_local_planner_params.yaml" command="load" />
+        <rosparam file="$(find move_base_navigation)/config/teb_local_planner_params.yaml" command="load"/>
     </node>
 
-    <node pkg="costmap_converter" type="standalone_converter" name="costmap_converter_node" output="screen">
-  <!-- 사용 가능한 플러그인 설정 -->
-  <param name="converter_plugin" value="costmap_converter::CostmapToPolygonsDBSMCCH"/>
-  
-  <!-- 토픽 이름을 TebLocalPlanner가 구독하는 경로로 변경 -->
-  <param name="obstacle_array_topic" value="/move_base/TebLocalPlannerROS/obstacles"/>
+    <!-- 토픽 리매핑 -->
+    <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
 
-  <param name="costmap_converter_rate" value="5"/>
-  <param name="costmap_converter_spin_thread" value="true"/>
-</node>
     <!-- ====== RViz 실행 ====== -->
     <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true"
           args="-d $(find move_base_navigation)/rviz/visualize_data.rviz"/>

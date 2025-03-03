@@ -35,9 +35,3 @@ global_costmap:
     enabled: true
     inflation_radius: 0.5  # 장애물 근처에서 경로를 제한하는 거리 (m)
     cost_scaling_factor: 3.0 # 장애물 가까이 접근할수록 비용 증가율 (값 크면 근처로 가는 경로를 더 강하게 제한)
-
-# global_costmap:
-#    global_frame: map
-#    robot_base_frame: base_link
-#    update_frequency: 5.0
-#    static_map: true
