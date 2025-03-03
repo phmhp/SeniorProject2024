@@ -12,11 +12,11 @@
     <param name="odom_frame_id" value="odom"/> <!-- 오도메트리 프레임 -->
     <param name="base_frame_id" value="base_link"/> <!-- 로봇의 기본 프레임 -->
     <param name="global_frame_id" value="map"/> <!-- 글로벌 맵 프레임 -->
-    <param name="transform_tolerance" value="0.5"/> <!-- TF 허용 시간 -->
-    <param name="update_min_d" value="0.2"/> <!-- 최소 거리 업데이트 (미터) -->
-    <param name="update_min_a" value="0.2"/> <!-- 최소 각도 업데이트 (라디안) -->
+    <param name="transform_tolerance" value="1.0"/> <!-- TF 허용 시간 -->
+    <param name="update_min_d" value="0.5"/> <!-- 최소 거리 업데이트 (미터) -->
+    <param name="update_min_a" value="0.5"/> <!-- 최소 각도 업데이트 (라디안) -->
     <param name="resample_interval" value="2"/> <!-- 리샘플링 간격 -->
-    <param name="laser_max_range" value="3.5"/> <!-- LIDAR 최대 거리 -->
+    <param name="laser_max_range" value="12.0"/> <!-- LIDAR 최대 거리 -->
     <param name="laser_model_type" value="likelihood_field"/> <!-- LIDAR 모델 -->
     <param name="z_hit" value="0.9"/> <!-- LIDAR 센서가 정확할 확률 -->
     <param name="z_short" value="0.1"/> <!-- 근거리 장애물 비율 -->

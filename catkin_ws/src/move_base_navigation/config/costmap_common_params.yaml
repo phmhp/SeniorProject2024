@@ -6,7 +6,7 @@ inflation_radius: 1.0
 publish_voxel_map: true
 
 transform_tolerance: 1.0
-observation_sources: laser_scan_sensor depth_camera_sensor
+observation_sources: laser_scan_sensor point_cloud_sensor
 
 laser_scan_sensor:
     sensor_frame: laser
@@ -18,7 +18,7 @@ laser_scan_sensor:
     raytrace_range: 3.0
     expected_update_rate: 5.0
 
-depth_camera_sensor:
+point_cloud_sensor:
     sensor_frame: camera_depth_optical_frame
     data_type: PointCloud2
     topic: /camera/depth/color/points
@@ -35,4 +35,4 @@ obstacle_layer:
   raytrace_range: 3.5
   footprint_clearing_enabled: true
   max_obstacle_height: 2.0
-  observation_sources: laser_scan_sensor depth_camera_sensor
+  observation_sources: laser_scan_sensor point_cloud_sensor

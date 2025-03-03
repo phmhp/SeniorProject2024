@@ -1,0 +1,20 @@
+digraph G {
+"odom" -> "base_link"[label="Broadcaster: /robot_navigate\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1740909989.730 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "laser"[label="Broadcaster: /robot_navigate\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1740909989.730 sec old)\nBuffer length: 0.000 sec\n"];
+"camera_link" -> "camera_depth_frame"[label="Broadcaster: /camera/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1740909989.730 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "camera_link"[label="Broadcaster: /robot_navigate\nAverage rate: 10.182 Hz\nMost recent transform: 1740909989.690 ( 0.039 sec old)\nBuffer length: 4.911 sec\n"];
+"camera_depth_frame" -> "camera_depth_optical_frame"[label="Broadcaster: /camera/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1740909989.730 sec old)\nBuffer length: 0.000 sec\n"];
+"camera_link" -> "camera_color_frame"[label="Broadcaster: /camera/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1740909989.730 sec old)\nBuffer length: 0.000 sec\n"];
+"camera_aligned_depth_to_color_frame" -> "camera_color_optical_frame"[label="Broadcaster: /camera/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1740909989.730 sec old)\nBuffer length: 0.000 sec\n"];
+"camera_link" -> "camera_aligned_depth_to_color_frame"[label="Broadcaster: /camera/realsense2_camera_manager\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1740909989.730 sec old)\nBuffer length: 0.000 sec\n"];
+"map" -> "odom"[label="Broadcaster: /amcl\nAverage rate: 13.671 Hz\nMost recent transform: 1740909990.647 ( -0.918 sec old)\nBuffer length: 4.974 sec\n"];
+"base_link" -> "base_footprint"[label="Broadcaster: /robot_navigate\nAverage rate: 10.182 Hz\nMost recent transform: 1740909989.690 ( 0.039 sec old)\nBuffer length: 4.911 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1740909989.730"[ shape=plaintext ] ;
+ }->"world";
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1740909989.730"[ shape=plaintext ] ;
+ }->"map";
+}

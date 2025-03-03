@@ -2,6 +2,7 @@
   <!-- 실행 인자 설정 -->
   <arg name="map_file" default="$(find my_robot_navigation)/Maps/b210.yaml" />
   <arg name="scan_topic" value="/scan"/>
+  <arg name="depth_topic" value="/camera/depth/color/points"/>
   <arg name="cmd_vel_topic" default="/cmd_vel" />
   <arg name="odom_topic" default="odom" />
   <arg name="initial_pose_x" value="1.0"/>
@@ -15,7 +16,11 @@
   <include file="$(find rplidar_ros)/launch/rplidar_a2m8.launch" />
 
   <!--  Depth Camera 실행 -->
-  <include file="$(find realsense2_camera)/launch/rs_camera.launch" />
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+      <arg name="align_depth" value="true" />
+      <arg name="enable_color" value="true" />
+      <arg name="filters" value="pointcloud"/>
+  </include>
 
   <!-- AMCL 실행 (위치 추정) -->
   <include file="$(find my_robot_navigation)/launch/amcl.launch">   

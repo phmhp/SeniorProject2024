@@ -219,7 +219,7 @@ Visualization Manager:
           Radius: 0.029999999329447746
           Shaft Diameter: 0.10000000149011612
           Shaft Length: 0.10000000149011612
-          Topic: /move_base/GlobalPlanner/plan
+          Topic: /move_base/TebLocalPlannerROS/local_plan
           Unreliable: false
           Value: true
       Enabled: true
@@ -396,7 +396,7 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 321.43829345703125
+      Scale: 69.32495880126953
       Target Frame: <Fixed Frame>
       X: 3.229435920715332
       Y: 0.78090500831604

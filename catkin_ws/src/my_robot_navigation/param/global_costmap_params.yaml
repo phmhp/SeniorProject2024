@@ -6,16 +6,16 @@ global_costmap:
   transform_tolerance: 0.5
 
   # 업데이트 주기 (Hz)
-  update_frequency: 10.0    # Costmap 내부 업데이트 빈도
-  publish_frequency: 10.0    # Costmap 토픽(RViz 시각화) 퍼블리시 빈도
+  update_frequency: 1.0    # Costmap 내부 업데이트 빈도
+  publish_frequency: 1.0    # Costmap 토픽(RViz 시각화) 퍼블리시 빈도
 
   static_map: true          # 정적 맵 사용
   rolling_window: false      # 전역 코스트맵은 보통 rolling_window=false
   track_unknown_space: true  # <== 필수!
 
-  width: 100           # 맵 상에서 고려할 범위. 보통 전역 맵은 더 크게 설정
-  height: 100
-  resolution: 0.05          # 맵 해상도(5cm). CPU부담 & 정밀도 고려해 조정
+  width: 50         # 맵 상에서 고려할 범위. 보통 전역 맵은 더 크게 설정
+  height: 50
+  resolution: 0.1         # 맵 해상도(5cm). CPU부담 & 정밀도 고려해 조정
   origin_x: 0 # 센서가 포함되도록 변경
   origin_y: 0
 
