@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import java.util.*
 
-class ChatActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
+class ChatActivity : BaseActivity(), TextToSpeech.OnInitListener {
 
     private lateinit var database: DatabaseReference
     private lateinit var micButton: ImageButton
