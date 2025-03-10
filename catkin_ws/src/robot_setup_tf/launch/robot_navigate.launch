@@ -5,6 +5,4 @@
     <!-- robot_navigate.py 실행 -->
     <node pkg="robot_setup_tf" type="robot_navigate.py" name="robot_navigate" output="screen"/>
 
-    <!-- 로봇 상태 퍼블리셔 실행 -->
-    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
 </launch>

@@ -1,0 +1,556 @@
+amcl:
+  base_frame_id: base_link
+  beam_skip_distance: 0.5
+  beam_skip_threshold: 0.3
+  do_beamskip: false
+  first_map_only: false
+  force_update_after_initialpose: false
+  force_update_after_set_map: false
+  global_frame_id: map
+  gui_publish_rate: -1.0
+  initial_cov_aa: 0.07017381955854368
+  initial_cov_xx: 0.23614998609640536
+  initial_cov_yy: 0.24403000924544394
+  initial_pose_a: 0.0017393966639170767
+  initial_pose_x: 1.0053276420639774
+  initial_pose_y: 1.01084965599189
+  kld_err: 0.01
+  kld_z: 0.99
+  laser_lambda_short: 0.1
+  laser_likelihood_max_dist: 2.0
+  laser_max_beams: 30
+  laser_max_range: 12.0
+  laser_min_range: -1.0
+  laser_model_type: likelihood_field
+  laser_sigma_hit: 0.2
+  laser_z_hit: 0.95
+  laser_z_max: 0.05
+  laser_z_rand: 0.05
+  laser_z_short: 0.1
+  max_particles: 2000
+  min_particles: 500
+  odom_alpha1: 0.1
+  odom_alpha2: 0.1
+  odom_alpha3: 0.1
+  odom_alpha4: 0.1
+  odom_alpha5: 0.2
+  odom_frame_id: odom
+  odom_model_type: diff
+  recovery_alpha_fast: 0.0
+  recovery_alpha_slow: 0.0
+  resample_interval: 2
+  restore_defaults: false
+  save_pose_rate: 0.5
+  sigma_hit: 0.2
+  tf_broadcast: true
+  tf_cache_time_secs: 30.0
+  transform_tolerance: 0.5
+  update_min_a: 0.5
+  update_min_d: 0.5
+  use_map_topic: false
+  z_hit: 0.9
+  z_max: 0.05
+  z_rand: 0.05
+  z_short: 0.1
+camera:
+  aligned_depth_to_color:
+    image_raw:
+      compressed:
+        format: jpeg
+        jpeg_optimize: false
+        jpeg_progressive: false
+        jpeg_quality: 80
+        jpeg_restart_interval: 0
+        png_level: 9
+      compressedDepth:
+        depth_max: 10.0
+        depth_quantization: 100.0
+        format: png
+        png_level: 1
+      theora:
+        keyframe_frequency: 64
+        optimize_for: 1
+        quality: 31
+        target_bitrate: 800000
+  color:
+    image_raw:
+      compressed:
+        format: jpeg
+        jpeg_optimize: false
+        jpeg_progressive: false
+        jpeg_quality: 80
+        jpeg_restart_interval: 0
+        png_level: 9
+      compressedDepth:
+        depth_max: 10.0
+        depth_quantization: 100.0
+        format: png
+        png_level: 1
+      theora:
+        keyframe_frequency: 64
+        optimize_for: 1
+        quality: 31
+        target_bitrate: 800000
+  depth:
+    image_rect_raw:
+      compressed:
+        format: jpeg
+        jpeg_optimize: false
+        jpeg_progressive: false
+        jpeg_quality: 80
+        jpeg_restart_interval: 0
+        png_level: 9
+      compressedDepth:
+        depth_max: 10.0
+        depth_quantization: 100.0
+        format: png
+        png_level: 1
+      theora:
+        keyframe_frequency: 64
+        optimize_for: 1
+        quality: 31
+        target_bitrate: 800000
+  realsense2_camera:
+    accel_fps: -1
+    accel_frame_id: camera_accel_frame
+    accel_optical_frame_id: camera_accel_optical_frame
+    align_depth: true
+    aligned_depth_to_color_frame_id: camera_aligned_depth_to_color_frame
+    aligned_depth_to_fisheye1_frame_id: camera_aligned_depth_to_fisheye1_frame
+    aligned_depth_to_fisheye2_frame_id: camera_aligned_depth_to_fisheye2_frame
+    aligned_depth_to_fisheye_frame_id: camera_aligned_depth_to_fisheye_frame
+    aligned_depth_to_infra1_frame_id: camera_aligned_depth_to_infra1_frame
+    aligned_depth_to_infra2_frame_id: camera_aligned_depth_to_infra2_frame
+    allow_no_texture_points: false
+    base_frame_id: camera_link
+    calib_odom_file: ''
+    clip_distance: -2.0
+    color_fps: -1
+    color_frame_id: camera_color_frame
+    color_height: -1
+    color_optical_frame_id: camera_color_optical_frame
+    color_width: -1
+    confidence_fps: -1
+    confidence_height: -1
+    confidence_width: -1
+    depth_fps: -1
+    depth_frame_id: camera_depth_frame
+    depth_height: -1
+    depth_optical_frame_id: camera_depth_optical_frame
+    depth_width: -1
+    device_type: ''
+    enable_accel: false
+    enable_color: true
+    enable_confidence: true
+    enable_depth: true
+    enable_fisheye: false
+    enable_fisheye1: false
+    enable_fisheye2: false
+    enable_gyro: false
+    enable_infra: false
+    enable_infra1: false
+    enable_infra2: false
+    enable_pointcloud: false
+    enable_pose: false
+    enable_sync: true
+    filters: pointcloud
+    fisheye1_frame_id: camera_fisheye1_frame
+    fisheye1_optical_frame_id: camera_fisheye1_optical_frame
+    fisheye2_frame_id: camera_fisheye2_frame
+    fisheye2_optical_frame_id: camera_fisheye2_optical_frame
+    fisheye_fps: -1
+    fisheye_frame_id: camera_fisheye_frame
+    fisheye_height: -1
+    fisheye_optical_frame_id: camera_fisheye_optical_frame
+    fisheye_width: -1
+    gyro_fps: -1
+    gyro_frame_id: camera_gyro_frame
+    gyro_optical_frame_id: camera_gyro_optical_frame
+    imu_optical_frame_id: camera_imu_optical_frame
+    infra1_frame_id: camera_infra1_frame
+    infra1_optical_frame_id: camera_infra1_optical_frame
+    infra2_frame_id: camera_infra2_frame
+    infra2_optical_frame_id: camera_infra2_optical_frame
+    infra_fps: 30
+    infra_height: 480
+    infra_rgb: false
+    infra_width: 848
+    initial_reset: false
+    json_file_path: ''
+    linear_accel_cov: 0.01
+    odom_frame_id: camera_odom_frame
+    ordered_pc: false
+    pointcloud_texture_index: 0
+    pointcloud_texture_stream: RS2_STREAM_COLOR
+    pose_frame_id: camera_pose_frame
+    pose_optical_frame_id: camera_pose_optical_frame
+    publish_odom_tf: true
+    publish_tf: true
+    reconnect_timeout: 6.0
+    rosbag_filename: ''
+    serial_no: ''
+    stereo_module:
+      exposure:
+        '1': 7500
+        '2': 1
+      gain:
+        '1': 16
+        '2': 16
+    tf_publish_rate: 0.0
+    topic_odom_in: odom_in
+    unite_imu_method: ''
+    usb_port_id: ''
+    wait_for_device_timeout: -1.0
+model: waffle_pi
+move_base:
+  GlobalPlanner:
+    allow_unknown: false
+    cost_factor: 3.0
+    default_tolerance: 0.2
+    lethal_cost: 253
+    neutral_cost: 50
+    old_navfn_behavior: false
+    orientation_mode: 0
+    orientation_window_size: 1
+    publish_potential: true
+    use_dijkstra: true
+    use_grid_path: false
+    use_quadratic: true
+    visualize_potential: true
+  TebLocalPlannerROS:
+    acc_lim_theta: 0.3
+    acc_lim_x: 0.5
+    acc_lim_y: 0.5
+    allow_init_with_backwards_motion: true
+    cmd_angle_instead_rotvel: false
+    control_look_ahead_poses: 1
+    costmap_converter_plugin: ''
+    costmap_converter_rate: 5
+    costmap_converter_spin_thread: true
+    costmap_obstacles_behind_robot_dist: 1.5
+    delete_detours_backwards: true
+    divergence_detection_enable: false
+    divergence_detection_max_chi_squared: 10.0
+    dt_hysteresis: 0.1
+    dt_ref: 0.3
+    dynamic_obstacle_inflation_dist: 0.6
+    enable_homotopy_class_planning: true
+    enable_multithreading: true
+    exact_arc_length: false
+    feasibility_check_lookahead_distance: -1.0
+    feasibility_check_no_poses: 10
+    footprint_model:
+      type: point
+    force_reinit_new_goal_angular: 0.78
+    force_reinit_new_goal_dist: 1.0
+    free_goal_vel: false
+    global_plan_overwrite_orientation: true
+    global_plan_prune_distance: 1
+    global_plan_viapoint_sep: 0.5
+    h_signature_prescaler: 0.5
+    h_signature_threshold: 0.1
+    include_costmap_obstacles: true
+    include_dynamic_obstacles: true
+    inflation_dist: 0.2
+    is_footprint_dynamic: false
+    legacy_obstacle_association: false
+    map_frame: map
+    max_global_plan_lookahead_dist: 3.0
+    max_number_classes: 4
+    max_number_plans_in_current_class: 1
+    max_ratio_detours_duration_best_duration: 3.0
+    max_vel_theta: 0.3
+    max_vel_trans: 0.4
+    max_vel_x: 0.4
+    max_vel_x_backwards: 0.2
+    max_vel_y: 0.0
+    min_obstacle_dist: 0.2
+    min_samples: 3
+    min_turning_radius: 0.2
+    no_inner_iterations: 5
+    no_outer_iterations: 4
+    obstacle_association_cutoff_factor: 5.0
+    obstacle_association_force_inclusion_factor: 1.5
+    obstacle_cost_exponent: 4.0
+    obstacle_heading_threshold: 0.45
+    obstacle_poses_affected: 15
+    obstacle_proximity_lower_bound: 0.0
+    obstacle_proximity_ratio_max_vel: 1.0
+    obstacle_proximity_upper_bound: 0.5
+    odom_topic: odom
+    optimization_activate: true
+    optimization_verbose: false
+    oscillation_filter_duration: 10
+    oscillation_omega_eps: 0.1
+    oscillation_recovery: true
+    oscillation_recovery_min_duration: 10
+    oscillation_v_eps: 0.1
+    penalty_epsilon: 0.1
+    prevent_look_ahead_poses_near_goal: 0
+    publish_feedback: false
+    roadmap_graph_area_length_scale: 1.0
+    roadmap_graph_area_width: 5.0
+    roadmap_graph_no_samples: 15
+    selection_alternative_time_cost: false
+    selection_cost_hysteresis: 1.0
+    selection_dropping_probability: 0.0
+    selection_obst_cost_scale: 100.0
+    selection_prefer_initial_plan: 0.9
+    selection_viapoint_cost_scale: 1.0
+    shrink_horizon_backup: true
+    shrink_horizon_min_duration: 10
+    switching_blocking_period: 0.0
+    teb_autosize: true
+    theta_stopped_vel: 0.1
+    trans_stopped_vel: 0.1
+    transform_tolerance: 0.5
+    use_proportional_saturation: false
+    via_points_ordered: false
+    viapoints_all_candidates: true
+    visualize_hc_graph: false
+    visualize_with_time_as_z_axis_scale: 0.0
+    weight_acc_lim_theta: 1.0
+    weight_acc_lim_x: 1.0
+    weight_acc_lim_y: 1.0
+    weight_adapt_factor: 2.0
+    weight_dynamic_obstacle: 10.0
+    weight_dynamic_obstacle_inflation: 0.2
+    weight_inflation: 0.1
+    weight_kinematics_forward_drive: 1.0
+    weight_kinematics_nh: 1000.0
+    weight_kinematics_turning_radius: 1.0
+    weight_max_vel_theta: 1.0
+    weight_max_vel_x: 2.0
+    weight_max_vel_y: 2.0
+    weight_obstacle: 50.0
+    weight_optimaltime: 1.0
+    weight_shortest_path: 0.0
+    weight_velocity_obstacle_ratio: 0.0
+    weight_viapoint: 1.0
+    wheelbase: 1.0
+    xy_goal_tolerance: 0.2
+    yaw_goal_tolerance: 0.1
+  always_use_footprint_from_params: true
+  base_global_planner: global_planner/GlobalPlanner
+  base_local_planner: teb_local_planner/TebLocalPlannerROS
+  clearing_rotation_allowed: true
+  conservative_reset_dist: 3.0
+  controller_frequency: 10.0
+  controller_patience: 15.0
+  footprint_clearing_enabled: true
+  footprint_in_topic: true
+  global_costmap:
+    footprint: '[[-0.3,-0.15],[0.3,-0.15],[0.3,0.15],[-0.3,0.15]]'
+    footprint_clearing_enabled: true
+    footprint_padding: 0.01
+    global_costmap:
+      global_frame: map
+      height: 25.2
+      origin_x: 0
+      origin_y: 0
+      plugins:
+      - name: static_layer
+        type: costmap_2d::StaticLayer
+      - name: obstacle_layer
+        type: costmap_2d::ObstacleLayer
+      - name: inflation_layer
+        type: costmap_2d::InflationLayer
+      publish_frequency: 1.0
+      resolution: 0.05
+      robot_base_frame: base_link
+      rolling_window: false
+      static_map: true
+      track_unknown_space: false
+      transform_tolerance: 1.0
+      update_frequency: 1.0
+      width: 32.4
+    height: 10
+    inflation_layer:
+      cost_scaling_factor: 10.0
+      enabled: true
+      inflate_unknown: false
+      inflation_radius: 0.2
+    obstacle_layer:
+      combination_method: 1
+      enabled: true
+      footprint_clearing_enabled: true
+      laser_scan_sensor:
+        clearing: true
+        data_type: LaserScan
+        marking: true
+        sensor_frame: laser
+        topic: /scan
+      max_obstacle_height: 1.2
+      observation_sources: laser_scan_sensor point_cloud_sensor
+      obstacle_range: 10.0
+      point_cloud_sensor:
+        clearing: true
+        data_type: PointCloud2
+        marking: true
+        max_obstacle_height: 1.2
+        min_obstacle_height: 0.1
+        sensor_frame: camera_color_optical_frame
+        topic: /camera/depth/color/points
+      raytrace_range: 10.0
+      track_unknown_space: true
+    origin_x: 0.0
+    origin_y: 0.0
+    plugins:
+    - name: obstacle_layer
+      type: costmap_2d::ObstacleLayer
+    - name: inflation_layer
+      type: costmap_2d::InflationLayer
+    publish_frequency: 0.0
+    publish_voxel_map: true
+    resolution: 0.05
+    robot_radius: 0.46
+    static_layer:
+      enabled: true
+      first_map_only: false
+      lethal_cost_threshold: 50
+      map_topic: /map
+      subscribe_to_updates: true
+      track_unknown_space: true
+    transform_tolerance: 0.3
+    update_frequency: 5.0
+    use_radius: false
+    width: 10
+  local_costmap:
+    footprint: '[[-0.3,-0.15],[0.3,-0.15],[0.3,0.15],[-0.3,0.15]]'
+    footprint_clearing_enabled: true
+    footprint_padding: 0.01
+    height: 10
+    inflation_layer:
+      cost_scaling_factor: 10.0
+      enabled: true
+      inflate_unknown: false
+      inflation_radius: 0.2
+    local_costmap:
+      footprint:
+      - - -0.3
+        - -0.15
+      - - 0.3
+        - -0.15
+      - - 0.3
+        - 0.15
+      - - -0.3
+        - 0.15
+      footprint_padding: 0.05
+      global_frame: odom
+      height: 6.0
+      plugins:
+      - name: static_layer
+        type: costmap_2d::StaticLayer
+      - name: obstacle_layer
+        type: costmap_2d::ObstacleLayer
+      - name: inflation_layer
+        type: costmap_2d::InflationLayer
+      publish_frequency: 5.0
+      resolution: 0.05
+      robot_base_frame: base_link
+      rolling_window: true
+      static_map: false
+      transform_tolerance: 0.5
+      update_frequency: 5.0
+      width: 6.0
+    obstacle_layer:
+      combination_method: 1
+      enabled: true
+      footprint_clearing_enabled: true
+      laser_scan_sensor:
+        clearing: true
+        data_type: LaserScan
+        marking: true
+        sensor_frame: laser
+        topic: /scan
+      max_obstacle_height: 1.2
+      observation_sources: laser_scan_sensor point_cloud_sensor
+      obstacle_range: 10.0
+      point_cloud_sensor:
+        clearing: true
+        data_type: PointCloud2
+        marking: true
+        max_obstacle_height: 1.2
+        min_obstacle_height: 0.1
+        sensor_frame: camera_color_optical_frame
+        topic: /camera/depth/color/points
+      raytrace_range: 10.0
+      track_unknown_space: false
+    origin_x: 0.0
+    origin_y: 0.0
+    plugins:
+    - name: obstacle_layer
+      type: costmap_2d::ObstacleLayer
+    - name: inflation_layer
+      type: costmap_2d::InflationLayer
+    publish_frequency: 0.0
+    publish_voxel_map: true
+    resolution: 0.05
+    robot_radius: 0.46
+    static_layer:
+      enabled: true
+      map_topic: /map
+      subscribe_to_updates: true
+    transform_tolerance: 0.3
+    update_frequency: 5.0
+    use_radius: false
+    width: 10
+  make_plan_add_unreachable_goal: true
+  make_plan_clear_costmap: true
+  max_planning_retries: -1
+  oscillation_distance: 0.2
+  oscillation_timeout: 10.0
+  planner_frequency: 5.0
+  planner_patience: 5.0
+  recovery_behavior_enabled: false
+  recovery_behaviors:
+  - name: conservative_reset
+    type: clear_costmap_recovery/ClearCostmapRecovery
+  - name: clearing_rotation
+    type: rotate_recovery/RotateRecovery
+  restore_defaults: false
+  shutdown_costmaps: false
+  use_radius: false
+robot_description: "<robot name=\"my_robot\">\n  <!-- Material \uC815\uC758 -->\n\
+  \  <material name=\"blue\">\n    <color rgba=\"0 0 1 1\"/>\n  </material>\n  <material\
+  \ name=\"red\">\n    <color rgba=\"1 0 0 1\"/>\n  </material>\n\n  <!-- World link\
+  \ -->\n  <link name=\"world\"/>\n\n  <!-- Base link -->\n  <link name=\"base_link\"\
+  >\n    <visual>\n      <geometry>\n        <box size=\"0.46 0.38 0.9\"/> <!-- \uB85C\
+  \uBD07 \uBCF8\uCCB4 -->\n      </geometry>\n      <material name=\"blue\"/>\n  \
+  \  </visual>\n    <visual>\n      <geometry>\n        <cylinder length=\"0.1\" radius=\"\
+  0.02\"/> <!--\uD654\uC0B4\uD45C-->\n      </geometry>\n      <material name=\"red\"\
+  />\n      <origin xyz=\"0.25 0 0.1\" rpy=\"0 0 0\"/> <!--\uB85C\uBD07 \uC55E\uCABD\
+  \ \uD654\uC0B4\uD45C-->\n    </visual>\n  </link>\n\n  <!-- Laser sensor -->\n \
+  \ <link name=\"laser\">\n    <visual>\n      <geometry>\n        <cylinder length=\"\
+  0.1\" radius=\"0.05\"/> <!-- \uB808\uC774\uC800 \uC13C\uC11C -->\n      </geometry>\n\
+  \      <material name=\"red\"/>\n    </visual>\n  </link>\n\n  <!-- Joints -->\n\
+  \  <!-- Base link\uC640 world \uAC04 \uACE0\uC815 -->\n  <joint name=\"base_joint\"\
+  \ type=\"fixed\">\n    <parent link=\"world\"/>\n    <child link=\"base_link\"/>\n\
+  \    <origin xyz=\"0 0 0\" rpy=\"0 0 0\"/> <!-- \uBCA0\uC774\uC2A4 \uB9C1\uD06C\
+  \ \uB192\uC774 \uC124\uC815 -->\n  </joint>\n\n  <!-- Laser\uC640 base_link \uAC04\
+  \ \uACE0\uC815 -->\n  <joint name=\"laser_joint\" type=\"fixed\">\n    <parent link=\"\
+  base_link\"/>\n    <child link=\"laser\"/>\n    <origin xyz=\"0.25 0.0 0.09\" rpy=\"\
+  0 0 0\"/> <!-- \uB77C\uC774\uB2E4\uC758 \uBB3C\uB9AC\uC801 \uC704\uCE58 \uC124\uC815\
+  \ -->\n  </joint>\n</robot>\n"
+rosdistro: 'noetic
+
+  '
+roslaunch:
+  uris:
+    host_roverosong__36109: http://roverosong:36109/
+    host_roverosong__36799: http://roverosong:36799/
+    host_roverosong__39819: http://roverosong:39819/
+    host_roverosong__45859: http://roverosong:45859/
+rosversion: '1.17.0
+
+  '
+rplidarNode:
+  angle_compensate: true
+  frame_id: laser
+  inverted: false
+  publish_rate: 10.0
+  serial_baudrate: 115200
+  serial_port: /dev/rplidar
+run_id: 50f45478-fcff-11ef-9bff-e51f46e75421
+tf_cache_time_secs: 30.0
+transform_tolerance: 5.0

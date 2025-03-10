@@ -1,6 +1,11 @@
 <launch>
   <!-- 실행 인자 설정 -->
-  <arg name="map_file" default="$(find my_robot_navigation)/Maps/b210.yaml" />
+  <param name="tf_cache_time_secs" value="30.0" />
+  <param name="transform_tolerance" value="5.0"/>
+
+  <node pkg="tf" type="tf_monitor" name="tf_monitor" args="base_link map"/>
+
+  <arg name="map_file" default="$(find my_robot_navigation)/Maps/b1_1.yaml" />
   <arg name="scan_topic" value="/scan"/>
   <arg name="depth_topic" value="/camera/depth/color/points"/>
   <arg name="cmd_vel_topic" default="/cmd_vel" />
@@ -11,15 +16,19 @@
 
   <!-- Map Server 실행 -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
-
+  
   <!-- RPLiDAR A2M8 실행 -->
-  <include file="$(find rplidar_ros)/launch/rplidar_a2m8.launch" />
+  <include file="$(find rplidar_ros)/launch/rplidar_symlink.launch">
+    <arg name="frame_id" value="laser" />
+    <arg name="publish_rate" value="10.0" />
+  </include>
 
   <!--  Depth Camera 실행 -->
-  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+  <include file="$(find realsense2_camera)/launch/nav_rs_camera.launch">
       <arg name="align_depth" value="true" />
       <arg name="enable_color" value="true" />
       <arg name="filters" value="pointcloud"/>
+      <arg name="enable_sync" value="true" />
   </include>
 
   <!-- AMCL 실행 (위치 추정) -->
@@ -57,7 +66,13 @@
 
     <!-- TEB 관련 설정 -->
     <rosparam file="$(find my_robot_navigation)/param/teb_local_planner_params.yaml" command="load" />
-
+    
+    <!-- 동적 footprint 토픽 및 반경 사용 비활성화 -->
+    <param name="footprint_in_topic" value="true" />
+    <param name="use_radius" value="false" />
+    <param name="footprint_clearing_enabled" value="true" /> <!-- 명시적 활성화 -->
+    <param name="always_use_footprint_from_params" value="true" /> <!-- 새 파라미터 추가 -->
+    
     <!-- 토픽 리매핑 -->
     <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
     <remap from="odom" to="$(arg odom_topic)"/>

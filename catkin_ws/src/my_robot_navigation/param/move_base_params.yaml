@@ -28,7 +28,7 @@ controller_patience: 15.0 #default:15.0
 # Use this parameter only when the default recovery behavior is used for move_base.
 conservative_reset_dist: 3.0 #3.0,
 # Whether to enable move_base recovery behavior to try to clear space.
-recovery_behavior_enabled: true
+recovery_behavior_enabled: false
 # Whether the robot uses in-situ rotation to clean up the space, this parameter is only used when the default recovery behavior is used.
 clearing_rotation_allowed: true
 # When move_base enters the inactive state, whether to disable the costmap of the node

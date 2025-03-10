@@ -1,0 +1,14 @@
+std_msgs/Header header
+int32 x
+int32 y
+float32 theta
+int32 battery
+int32[] ultrasonic
+bool emergency_switch
+bool moving
+bool charger_connected
+bool front_bumper
+bool rear_bumper
+bool fully_charged
+float32 linear_velocity
+float32 angular_velocity

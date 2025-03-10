@@ -1,26 +1,29 @@
 #!/usr/bin/env python3
-# teleop 으로 map 생성
-
+import sys
 import rospy
 import serial
 import threading
-import sys
 import math
 import tf
-
-from geometry_msgs.msg import Twist
+import tf2_ros
+from geometry_msgs.msg import Twist,Point32
 from std_msgs.msg import String
 from nav_msgs.msg import Odometry
 from tf.broadcaster import TransformBroadcaster
-sys.path.append('/home/roverosong/catkin_ws/src')
+from robot_setup_tf.msg import RobotState, RobotCommand
 from robot_setup_tf.settings import Params
+
+sys.path.append('/home/roverosong/catkin_ws/src')
+sys.path.append('/home/roverosong/catkin_ws/devel/lib/python3/dist-packages')
 
 prm = Params()
 
-# ROS 토픽 이름
+# ROS 토픽 정의
 MONITOR_TOPIC = "/robot/monitor"
-CMD_TOPIC = "/cmd_vel"  # TurtleBot3 teleop의 기본 토픽 이름
+CMD_TOPIC_VEL = "/cmd_vel"  # TurtleBot3 호환
+CMD_TOPIC_CMD = "/robot/cmd"   # TurtleBot3 teleop의 기본 토픽 이름
 ODOM_TOPIC= "/odom"
+STATE_TOPIC = "/robot/state"
 
 # 기본 설정
 prm.sPort = '/dev/robotInfo'  # 시리얼 포트
@@ -29,16 +32,17 @@ prm.sID = 1  # 로봇 ID
 
 # Publisher 정의
 monitor_pub = rospy.Publisher(MONITOR_TOPIC, String, queue_size=10)
+state_pub = rospy.Publisher(STATE_TOPIC, RobotState, queue_size=10)
 odom_pub = rospy.Publisher(ODOM_TOPIC, Odometry, queue_size=10)
-odom_broadcaster = TransformBroadcaster()
+
+odom_broadcaster = tf.TransformBroadcaster()
 
 # 로봇의 초기 위치와 속도
-x = 0.0
-y = 0.0
-theta = 0.0
-vx = 0.0
-vth = 0.0
+x, y, theta = 0.0, 0.0, 0.0
+vx, vth = 0.0, 0.0
 last_time = None
+
+position_lock = threading.Lock()
 
 def connect_serial_port():
     """시리얼 포트 연결"""
@@ -50,7 +54,7 @@ def connect_serial_port():
         pass
 
     try:
-        prm.trans = serial.Serial(prm.sPort, prm.sVelo, timeout=1)
+        prm.trans = serial.Serial(prm.sPort, prm.sVelo, timeout=3)
         rospy.loginfo(f"Connected to {prm.sPort} at {prm.sVelo} baud.")
     except serial.SerialException as e:
         rospy.logerr(f"Failed to connect: {e}")
@@ -81,16 +85,16 @@ def process_state_data(state, mode):
     elif mode == 'display':
         rospy.loginfo(f"display3: {value}")
 
-def read_sensor_data():
+def read_sensor_data(tf_buffer):
     """센서 데이터를 읽어서 ROS 토픽으로 퍼블리시"""
     global x, y, theta, vx, vth, last_time
+    rate = rospy.Rate(30)  # 30Hz로 실행
     try:
         while not rospy.is_shutdown():
             header = None
 
-            while header is None or len(header)<2 or header[0] != 172 or header[1] != 184:
+            while header is None or len(header) < 2 or header[0] != 172 or header[1] != 184:
                 header = prm.trans.read(2)  # 시작 바이트 2개 읽기
-                print(f"header : {header}")
                 rospy.loginfo(f"Searching for header: {header}")
 
             # 유효한 헤더를 발견하면 나머지 데이터를 읽음
@@ -103,169 +107,104 @@ def read_sensor_data():
             response = list(header) + list(payload)
             rospy.loginfo(f"Raw data received: {response}")
 
-            # 데이터 파싱
-            parse_sensor_data(response)
+            # 데이터 파싱 및 TF 변환 처리
+            parse_sensor_data(response, tf_buffer)
+
+            rate.sleep()  # 30Hz로 실행 (센서 데이터 처리 주기 유지)
 
     except Exception as e:
         rospy.logerr(f"Error reading data: {e}")
 
-def parse_sensor_data(response):
+
+
+
+def get_tf_transform(tf_buffer, target_frame="map", source_frame="base_link"):
+    """TF 변환을 가져오는 함수 (tf_buffer를 main()에서 전달받음)"""
+    try:
+        current_time = rospy.Time.now()
+        transform = tf_buffer.lookup_transform(target_frame, source_frame, current_time, rospy.Duration(1.0))
+        return transform
+    except tf2_ros.LookupException as e:
+        rospy.logwarn(f"TF LookupException: {e}")
+    except tf2_ros.ExtrapolationException as e:
+        rospy.logwarn(f"TF ExtrapolationException: {e}")
+    return None
+
+
+def parse_sensor_data(response,tf_buffer):
     """센서 데이터 파싱"""
     global x, y, theta, vx, vth, last_time
+
     try:
-        # 현재 시간 계산
         current_time = rospy.Time.now()
         if last_time is None:
             last_time = current_time
         dt = (current_time - last_time).to_sec()
         last_time = current_time
+        dt = max(0.01, min(0.1, dt))  # dt 범위 제한
 
-        dt = max(0.01, min(0.1, dt))
+        # TF 변환 가져오기 (현재 base_link의 위치를 map 기준으로 변환)
+        transform = get_tf_transform(tf_buffer, "map", "base_link")
+        if transform:
+            rospy.loginfo(f"TF Transform Data: {transform.transform.translation}")
 
-        data_start = 5  # D0 위치
+
+        # 센서 데이터 파싱
+        data_start = 5
         x_coord = int.from_bytes(response[data_start:data_start+4], byteorder='little', signed=True)
         y_coord = int.from_bytes(response[data_start+4:data_start+8], byteorder='little', signed=True)
         angle = int.from_bytes(response[data_start+8:data_start+10], byteorder='little', signed=False) / 10.0
         battery = response[data_start+10]
         ultrasonic = [response[data_start+11], response[data_start+12], response[data_start+13], response[data_start+14]]
         status = response[data_start+15]
-        linear_velocity = int.from_bytes(response[data_start+16:data_start+18], byteorder='little', signed=True)  * 0.001 # mm/s -> m/s
-        angular_velocity = int.from_bytes(response[data_start+18:data_start+20], byteorder='little', signed=True) / 10.0 # 0.1 deg/s -> deg/s
-        # 로봇 위치와 방향 업데이트 (각도를 라디안으로 변환)
+        linear_velocity = int.from_bytes(response[data_start+16:data_start+18], byteorder='little', signed=True) * 0.001  # mm/s -> m/s
+        angular_velocity = int.from_bytes(response[data_start+18:data_start+20], byteorder='little', signed=True) / 10.0  # 0.1 deg/s -> deg/s
+
+        rospy.loginfo(f"Parsed data - x: {x_coord}, y: {y_coord}, angle: {angle}, battery: {battery}, v: {linear_velocity}, w: {angular_velocity}")
+
+        # 로봇 상태 업데이트
         vth = math.radians(angular_velocity)  # deg/s -> rad/s
-        x += linear_velocity * dt * math.cos(theta)
-        y += linear_velocity * dt * math.sin(theta)
-        theta += vth * dt
+        with position_lock:
+            x += linear_velocity * dt * math.cos(theta)
+            y += linear_velocity * dt * math.sin(theta)
+            theta += vth * dt
+            theta = math.atan2(math.sin(theta), math.cos(theta))  # -pi ~ pi 범위로 유지
 
-        # Theta 값 범위 정리 (-pi ~ pi)
-        theta = math.atan2(math.sin(theta), math.cos(theta))
+        # RobotState 메시지 생성 및 퍼블리시
+        state_msg = RobotState()
+        state_msg.header.stamp = current_time
+        state_msg.header.frame_id = "base_link"
+        state_msg.x = x_coord
+        state_msg.y = y_coord
+        state_msg.theta = angle
+        state_msg.battery = battery
+        state_msg.ultrasonic = ultrasonic
+        state_msg.emergency_switch = bool(status & 0b00000001)
+        state_msg.moving = bool(status & 0b00000010)
+        state_msg.charger_connected = bool(status & 0b00000100)
+        state_msg.front_bumper = bool(status & 0b00001000)
+        state_msg.rear_bumper = bool(status & 0b00100000)
+        state_msg.fully_charged = bool(status & 0b10000000)
+        state_msg.linear_velocity = linear_velocity
+        state_msg.angular_velocity = angular_velocity
+        state_pub.publish(state_msg)
 
-        # 쿼터니언 생성     
+        # Odometry 메시지 생성 및 퍼블리시
         orientation_quat = tf.transformations.quaternion_from_euler(0, 0, theta)
-
-        # odom 메시지 생성
         odom = Odometry()
         odom.header.stamp = current_time
         odom.header.frame_id = "odom"
-
-        # 위치 설정
         odom.pose.pose.position.x = x * 0.001
         odom.pose.pose.position.y = y * 0.001
         odom.pose.pose.position.z = 0.0
-        
-        # 쿼터니언 값을 각각 설정
         odom.pose.pose.orientation.x = orientation_quat[0]
         odom.pose.pose.orientation.y = orientation_quat[1]
         odom.pose.pose.orientation.z = orientation_quat[2]
         odom.pose.pose.orientation.w = orientation_quat[3]
-        # 속도 설정
         odom.child_frame_id = "base_link"
         odom.twist.twist.linear.x = linear_velocity
-        odom.twist.twist.linear.y = 0
         odom.twist.twist.angular.z = vth
-
-
-        # from tf.transformations import quaternion_from_euler, quaternion_multiply
-
-        # # 기존 쿼터니언에 180도 회전 추가
-        # adjusted_orientation_quat = quaternion_multiply(
-        #     orientation_quat,
-        #     quaternion_from_euler(0, 0, math.pi)  # Z축으로 180도 회전
-        # )
-
-        # # odom -> base_link 변환
-        # odom_broadcaster.sendTransform(
-        #     (x, y, 0),
-        #     adjusted_orientation_quat,
-        #     current_time,
-        #     "base_link",
-        #     "odom"
-        # )
-
-
-        # odom -> base_link 변환 (동적 /tf 발행)
         odom_pub.publish(odom)
-        
-        odom_broadcaster.sendTransform(
-            (x, y, 0),
-            orientation_quat,
-            current_time,
-            "base_link",
-            "odom"
-        )
-
-        odom_broadcaster.sendTransform(
-            (0, 0, 0),  # 위치는 동일
-            tf.transformations.quaternion_from_euler(0, 0, 0),
-            current_time,
-            "base_footprint",
-            "base_link"
-        )
-
-        # base_link → laser 변환
-        laser_offset_x = 0.25  # 라이더가 로봇 앞쪽 0.25m에 위치
-        laser_offset_y = 0.0
-        laser_offset_z = 0.09  # z축 높이
-        laser_orientation_quat = tf.transformations.quaternion_from_euler(0, 0, math.pi)  # Z축 180도 회전 하려면 math.pi
-        
-       
-
-        odom_broadcaster.sendTransform(
-            (laser_offset_x, laser_offset_y, laser_offset_z),
-            laser_orientation_quat,
-            current_time,
-            "laser",
-            "base_link"
-        )
- 	
- 	# base_link → depth 카메라 변환 
-        
-        #위치(Translation)
-        depth_offset_x = 0.26 #depth 카메라가 로봇 앞쪽 0.26m에 위치
-        depth_offset_y = 0.0 #depth 카메라가 정중앙에 위치 (좌우 기준)
-        depth_offset_z = 0.1 #depth 카메라가 10cm 높이에 설치 
-        
-        #방향 
-        depth_orientation_quat = tf.transformations.quaternion_from_euler(-math.radians(45), 0, 0)  # X축으로 -45도 회전
- 	
- 	
- 	# 전달 
-        odom_broadcaster.sendTransform(
-            (depth_offset_x, depth_offset_y, depth_offset_z),
-            depth_orientation_quat,
-            current_time,
-            "camera_link",
-            "base_link"
-        ) 	
-
-	
-        status_bits = {
-            "Emergency Switch": bool(status & 0b00000001),
-            "Moving": bool(status & 0b00000010),
-            "Charger Connected": bool(status & 0b00000100),
-            "Front Bumper": bool(status & 0b00001000),
-            "Reserved 1": bool(status & 0b00010000),
-            "Rear Bumper": bool(status & 0b00100000),
-            "Reserved 2": bool(status & 0b01000000),
-            "Fully Charged": bool(status & 0b10000000),
-        }
-
-        rospy.loginfo("Parsed Data:")
-        rospy.loginfo(f"  X Coordinate (mm): {x_coord}")
-        rospy.loginfo(f"  Y Coordinate (mm): {y_coord}")
-        rospy.loginfo(f"  Angle (°): {angle}")
-        rospy.loginfo(f"  Battery (%): {battery}")
-        rospy.loginfo(f"  Ultrasonic Sensors (cm): {ultrasonic}")
-        rospy.loginfo(f"  Status Bits: {status_bits}")
-        rospy.loginfo(f"  Linear Velocity (mm/s): {linear_velocity}")
-        rospy.loginfo(f"  Angular Velocity (°/s): {angular_velocity}")
-
-        monitor_msg = String()
-        monitor_msg.data = (f"X: {x_coord}, Y: {y_coord}, Angle: {angle}°, "
-                            f"Battery: {battery}%, Ultrasonic: {ultrasonic}, "
-                            f"Linear Velocity: {linear_velocity} mm/s, "
-                            f"Angular Velocity: {angular_velocity}°/s")
-        monitor_pub.publish(monitor_msg)
 
     except Exception as e:
         rospy.logerr(f"Error parsing sensor data: {e}")
@@ -293,6 +232,59 @@ def cmd_vel_callback(msg):
     send_message(prm.state)
 
 
+
+def tf_broadcast_loop():
+    """TF 변환을 일정 주기로 발행하는 쓰레드"""
+    rate = rospy.Rate(50)  # TF를 50Hz로 발행
+    while not rospy.is_shutdown():
+        current_time = rospy.Time.now()
+
+        # 오도메트리 변환
+        orientation_quat = tf.transformations.quaternion_from_euler(0, 0, theta)
+        odom_broadcaster.sendTransform(
+            (x * 0.001, y * 0.001, 0),
+            orientation_quat,
+            current_time,
+            "base_link",
+            "odom"
+        )
+
+        # LiDAR 변환
+        odom_broadcaster.sendTransform(
+            (0.25, 0.0, 0.09),
+            tf.transformations.quaternion_from_euler(0, 0, math.pi),
+            current_time,
+            "laser",
+            "base_link"
+        )
+
+        # 카메라 변환
+        odom_broadcaster.sendTransform(
+            (0.26, 0.0, 0.1),
+            tf.transformations.quaternion_from_euler(-math.radians(45),0, 0),
+            current_time,
+            "camera_link",
+            "base_link"
+        )
+
+        # odom_broadcaster.sendTransform(
+        #     (0.0, 0.0, 0.0),
+        #     tf.transformations.quaternion_from_euler(-0.5, 0.5, -0.5),
+        #     current_time,
+        #     "camera_depth_optical_frame",
+        #     "camera_link"
+        # )
+
+        # odom_broadcaster.sendTransform(
+        #     (0.0, 0.0, 0.0),
+        #     tf.transformations.quaternion_from_euler(-0.5, 0.5, -0.5),
+        #     current_time,
+        #     "camera_color_optical_frame",
+        #     "camera_link"
+        # )
+
+        rate.sleep()
+
 def send_message(state):
     """로봇으로 명령 전송"""
     try:
@@ -307,21 +299,32 @@ def send_message(state):
     except Exception as e:
         rospy.logerr(f"Error sending message: {e}")
 
-def serial_read_thread():
+def serial_read_thread(tf_buffer):
     """명령 재전송 및 센서 데이터 읽기"""
     while not rospy.is_shutdown():
         process_state_data('pid_robot_cmd', 'put')
         send_message('pid_robot_cmd')
-        read_sensor_data()
+        read_sensor_data(tf_buffer)
         rospy.sleep(0.1)  # 1초에 20회 반복
+
+
 
 if __name__ == "__main__":
     rospy.init_node("robot_controller")
+    
+    tf_buffer = tf2_ros.Buffer(cache_time=rospy.Duration(5.0))
+    tf_listener = tf2_ros.TransformListener(tf_buffer)
 
+    rospy.loginfo("TF Listener initialized.") 
+    
+    # TF 쓰레드 실행
+    threading.Thread(target=tf_broadcast_loop, daemon=True).start()
+
+    rospy.sleep(5)
     connect_serial_port()
-
-    rospy.Subscriber(CMD_TOPIC, Twist, cmd_vel_callback)
-
-    threading.Thread(target=serial_read_thread, daemon=True).start()
+    rospy.Subscriber(CMD_TOPIC_VEL, Twist, cmd_vel_callback)
+    
+    # tf_buffer를 thread에 전달하도록 수정
+    threading.Thread(target=serial_read_thread, args=(tf_buffer,), daemon=True).start()
 
     rospy.spin()

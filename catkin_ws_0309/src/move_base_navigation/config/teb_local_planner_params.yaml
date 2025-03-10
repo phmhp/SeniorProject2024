@@ -1,0 +1,41 @@
+TebLocalPlannerROS:
+  #  로봇 위치 정보
+  odom_topic: odom
+  map_frame: map
+
+  #  로봇의 속도 및 가속 제한 (로봇의 물리적 한계를 고려)
+  acc_lim_x: 0.5
+  acc_lim_theta: 0.3
+  max_vel_x: 0.4
+  max_vel_x_backwards: 0.2
+  max_vel_theta: 0.3
+  min_turning_radius: 0.2
+
+  #  목표 도달 시 허용 오차
+  xy_goal_tolerance: 0.2
+  yaw_goal_tolerance: 0.1
+
+  #  경로 생성 관련 (Trajectory)
+  dt_ref: 0.3
+  dt_hysteresis: 0.1
+  min_samples: 3
+  max_global_plan_lookahead_dist: 3.0
+
+  #  장애물 회피 관련
+  min_obstacle_dist: 0.2
+  inflation_dist: 0.2
+  include_costmap_obstacles: True
+  include_dynamic_obstacles: True
+  dynamic_obstacle_inflation_dist: 0.6
+
+  #  최적화 관련 (Optimization)
+  optimization_activate: True
+  weight_obstacle: 50
+  weight_inflation: 0.1
+  weight_dynamic_obstacle: 10
+  weight_optimaltime: 1
+
+  #  회복 행동 (Recovery)
+  shrink_horizon_backup: True
+  oscillation_recovery: True
+

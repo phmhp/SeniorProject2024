@@ -1,0 +1,23 @@
+<launch>
+    <!-- RTAB-Map 실행 -->
+    <node pkg="rtabmap_ros" type="rtabmap" name="rtabmap" output="screen">
+        <param name="localization" value="true"/>  <!-- Localization 모드 -->
+        <param name="subscribe_scan" value="true"/>  <!-- 2D Lidar 사용 -->
+         <!-- 2D Map 기반 설정 -->
+        <param name="Grid/3D" value="false"/>  <!-- 2D 맵 사용 -->
+        <param name="Grid/MaxObstacleHeight" value="2.0"/>  
+        <param name="Grid/FromDepth" value="false"/>  
+
+        <!-- ORB Feature 활용 -->
+        <param name="Kp/DetectorStrategy" value="6"/>  <!-- ORB 사용 -->
+        <param name="Mem/UseOdomInfo" value="true"/>  
+        <param name="Reg/Force3DoF" value="true"/>  <!-- 3DoF (XY 평면 기준) -->
+
+        <!-- Loop Closure 활성화 -->
+        <param name="RGBD/LoopClosureDetection" value="true"/>  
+        <param name="RGBD/ProximityBySpace" value="true"/>  
+
+       
+    </node>
+</launch>
+

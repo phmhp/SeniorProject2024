@@ -1,7 +1,9 @@
 obstacle_range: 10.0           # 6.0 -> 10.0: RPLIDAR 최대 범위 활용
 raytrace_range: 10.0           # 3.5 -> 10.0: 장애물 제거 범위 확장
 footprint: [[-0.30, -0.15], [0.30,-0.15], [0.30, 0.15], [-0.30, 0.15]]
-robot_radius: 0.30             # 무시되지만 참고용으로 수정
+# robot_radius: 0.30             # 무시되지만 참고용으로 수정
+footprint_padding: 0.01        # footprint 주변 패딩
+footprint_clearing_enabled: true  # footprint 기반 클리어링 활성화
 inflation_radius: 0.2          # 0.4 -> 0.6: 안전 거리 확보
 publish_voxel_map: true
 
@@ -15,7 +17,7 @@ laser_scan_sensor:
   clearing: true
 
 point_cloud_sensor:
-  sensor_frame: camera_depth_optical_frame
+  sensor_frame: camera_color_optical_frame
   data_type: PointCloud2
   topic: /camera/depth/color/points
   marking: true
@@ -25,7 +27,10 @@ point_cloud_sensor:
 
 obstacle_layer:
   enabled: true
-  track_unknown_space: true
+  track_unknown_space: false
   footprint_clearing_enabled: true
   max_obstacle_height: 1.2    # 2.0 -> 1.2: 로봇이 넘을 수 없는 높이 조정
   observation_sources: laser_scan_sensor point_cloud_sensor
+  combination_method: 1 
+
+use_radius: false

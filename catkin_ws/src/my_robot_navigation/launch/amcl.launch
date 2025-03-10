@@ -9,10 +9,11 @@
   <!-- AMCL -->
   <node pkg="amcl" type="amcl" name="amcl" output="screen">
     <!-- 기본 설정 -->
+    <param name="tf_cache_time_secs" value="30.0" />
     <param name="odom_frame_id" value="odom"/> <!-- 오도메트리 프레임 -->
     <param name="base_frame_id" value="base_link"/> <!-- 로봇의 기본 프레임 -->
     <param name="global_frame_id" value="map"/> <!-- 글로벌 맵 프레임 -->
-    <param name="transform_tolerance" value="1.0"/> <!-- TF 허용 시간 -->
+    <param name="transform_tolerance" value="0.5"/> <!-- TF 허용 시간 -->
     <param name="update_min_d" value="0.5"/> <!-- 최소 거리 업데이트 (미터) -->
     <param name="update_min_a" value="0.5"/> <!-- 최소 각도 업데이트 (라디안) -->
     <param name="resample_interval" value="2"/> <!-- 리샘플링 간격 -->
@@ -43,5 +44,6 @@
 
     <!-- LIDAR 토픽 -->
     <remap from="scan" to="$(arg scan_topic)"/>
+
   </node>
 </launch>
