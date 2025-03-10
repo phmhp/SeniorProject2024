@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/mdlogo"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/md_logo" />
+
+    <TextView
+        android:id="@+id/mainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:text="안녕하세요! 숙명여자대학교 안내로봇"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="#636569"/>
+
+    <TextView
+
+        android:id="@+id/subText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mainText"
+        android:layout_centerHorizontal="true"
+        android:text="Roverosong 입니다"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:textColor="#636569"/>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="#99003087"
+        android:paddingTop="80dp"
+        android:paddingBottom="50dp">
+
+        <TextView
+            android:id="@+id/instructionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="어디를 찾고 계신가요?"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:textColor="#E5EDF8"
+            android:layout_marginBottom="30dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"> <!-- 버튼 수평 중앙 정렬 -->
+
+            <Button
+                android:id="@+id/classroomButton"
+                android:layout_width="220dp"
+                android:layout_height="90dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@null"
+                android:text="르네상스\n엘레베이터"
+                style="@style/CustomButtonStyle"/>
+
+            <Button
+                android:id="@+id/restroomButton"
+                android:layout_width="220dp"
+                android:layout_height="90dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@null"
+                android:text="프라임관\n엘레베이터"
+                style="@style/CustomButtonStyle"/>
+
+            <Button
+                android:id="@+id/parkingButton"
+                android:layout_width="220dp"
+                android:layout_height="90dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@null"
+                android:text="주차장"
+                style="@style/CustomButtonStyle"/>
+
+            <Button
+                android:id="@+id/artGalleryButton"
+                android:layout_width="220dp"
+                android:layout_height="90dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@null"
+                android:text="미술관"
+                style="@style/CustomButtonStyle"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/chatButton"
+            android:layout_width="773dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_background"
+            android:padding="12dp"
+            android:text="Roverosong과 대화하기!"
+            android:textColor="@color/dark_blue"
+            android:textFontWeight="600"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
