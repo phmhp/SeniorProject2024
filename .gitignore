@@ -118,3 +118,9 @@ Videos
 *.zip
 
 *.deb
+
+.plastic4/
+
+catkin_ws_0309/
+
+gtsam

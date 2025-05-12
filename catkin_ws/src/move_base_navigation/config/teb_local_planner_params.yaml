@@ -1,6 +1,0 @@
-TebLocalPlannerROS:
-  costmap_converter_plugin: "costmap_converter::CostmapToPolygonsDBSMCCH"
-  costmap_converter_rate: 5
-  costmap_converter_spin_thread: true
-  costmap_converter_obstacle_topic: "/move_base/TebLocalPlannerROS/obstacles"
-
