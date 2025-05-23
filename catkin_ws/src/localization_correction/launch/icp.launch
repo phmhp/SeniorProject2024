@@ -1,0 +1,33 @@
+<launch>
+    <!-- ROS Master 실행 -->
+    <param name="use_sim_time" value="false" />
+
+    
+    <!-- 실행 인자 설정 -->
+    <arg name="map_file" default="$(find localization_correction)/map/b1.yaml" />
+    <!--<arg name="map_file" default="$(find localization_correction)/map/myungsin.yaml" />-->
+
+    <!-- Map Server 실행 -->
+    <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+  
+    <!-- Depth 카메라 (RealSense D435) 실행 -->
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">  
+    <arg name="align_depth" value="true" /> 
+    <arg name="enable_color" value="true" />
+    </include>
+    
+    <!-- Localization Correction 노드 실행 -->
+    <node name="localization_correction" pkg="localization_correction" type="icp_localization.py" output="screen" launch-prefix="python3">
+    <param name="T_3d_to_2d" value ="$(find localization_correction)/cfg/renaissance_T_3d_to_2d.npy" />
+    </node>
+        <node name="visualize_path" pkg="localization_correction" type="visualize_path.py" output="log" launch-prefix="python3" />
+    <!-- robot_setup_tf mock_simulation 노드 실행 -->
+    <node name="mock_tf" pkg="robot_setup_tf" type="mock_simulation.py" output="log" launch-prefix="python3" />
+    <!--<node name="mock_initialpose_publisher" pkg="robot_setup_tf" type="initialpose_publisher.py"
+      output="log" launch-prefix="python3" />-->
+
+    <!-- RViz 실행 -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find localization_correction)/rviz/localization_correction.rviz" output="screen" />
+</launch>
+
+

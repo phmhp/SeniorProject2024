@@ -1,0 +1,15 @@
+<launch>
+  <!-- 실행 인자 설정 -->
+  <arg name="map_file" default="$(find localization_correction)/map/b1.yaml" />
+
+  <!-- Map Server 실행 -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+  
+  <node name="localization_correction" pkg="localization_correction" type="publish_colored_pcd_rviz.py" output="screen" launch-prefix="python3" />
+
+   <!-- RViz 실행 -->
+  <node pkg="rviz" type="rviz" name="rviz" output="screen" required="true" 
+        args="-d $(find localization_correction)/rviz/default2.rviz"/>
+
+
+</launch>

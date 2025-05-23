@@ -1,0 +1,8 @@
+<launch>
+    <!-- 로봇 URDF 로드 -->
+    <param name="robot_description" textfile="$(find robot_setup_tf)/urdf/roverosong.urdf"/>
+
+    <!-- robot_navigate.py 실행 -->
+    <node pkg="robot_setup_tf" type="robot_navigate.py" name="robot_navigate" output="screen"/>
+
+</launch>

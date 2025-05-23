@@ -1,0 +1,43 @@
+# Set the plugin name of the global path planner for move_base
+#base_global_planner: "navfn/NavfnROS"
+base_global_planner: "global_planner/GlobalPlanner"
+#base_global_planner: "carrot_planner/CarrotPlanner"
+
+# Set the plugin name of the local path planner of move_base
+base_local_planner: "teb_local_planner/TebLocalPlannerROS" # Implement DWA (Dynamic Window Method) local planning algorithm
+# base_local_planner: "dwa_local_planner/DWAPlannerROS"       # Realize an online optimized local trajectory planner
+# Recovery behavior
+recovery_behaviors:
+  - name: 'conservative_reset'
+    type: 'clear_costmap_recovery/ClearCostmapRecovery'
+  #- name: 'aggressive_reset'
+  #  type: 'clear_costmap_recovery/ClearCostmapRecovery'
+  #- name: 'super_reset'
+  #  type: 'clear_costmap_recovery/ClearCostmapRecovery'
+  - name: 'clearing_rotation'
+    type: 'rotate_recovery/RotateRecovery'
+    #- name: 'move_slow_and_clear'
+    #type: 'move_slow_and_clear/MoveSlowAndClear'
+
+# Frequency of sending commands to the robot chassis cmd_vel
+controller_frequency: 10.0 #default:20.0
+# The time that the path planner waits for a valid control command before the space cleanup operation is executed
+planner_patience: 5.0 #default:5.0
+# Time the controller waits for a valid control command before the space clearing operation is executed
+controller_patience: 15.0 #default:15.0
+# Use this parameter only when the default recovery behavior is used for move_base.
+conservative_reset_dist: 3.0 #3.0,
+# Whether to enable move_base recovery behavior to try to clear space.
+recovery_behavior_enabled: false
+# Whether the robot uses in-situ rotation to clean up the space, this parameter is only used when the default recovery behavior is used.
+clearing_rotation_allowed: true
+# When move_base enters the inactive state, whether to disable the costmap of the node
+shutdown_costmaps: false #false
+# Allowed shock time before performing the recovery operation, 0 means never timeout
+oscillation_timeout: 10.0 #0.0
+# The robot needs to move this distance before it can be considered as having no vibration. Reset timer parameters after moving
+oscillation_distance: 0.2 #0.5
+# The global path planner cycle rate.
+planner_frequency: 5.0 #0.0
+# The number of planned retries allowed before performing the recovery action. The value -1.0 corresponds to unlimited retries.
+max_planning_retries: -1.0

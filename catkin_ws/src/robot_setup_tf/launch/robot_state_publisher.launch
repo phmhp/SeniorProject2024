@@ -1,0 +1,6 @@
+<launch>
+  <!-- robot_state_publisher 실행 -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robot_setup_tf)/urdf/roverosong.urdf" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
+
+</launch>
