@@ -1,0 +1,2 @@
+*.zip filter=lfs diff=lfs merge=lfs -text
+catkin_ws/src/localization_correction/map/renaissance_0416_3_good_denoised.zip filter=lfs diff=lfs merge=lfs -text
