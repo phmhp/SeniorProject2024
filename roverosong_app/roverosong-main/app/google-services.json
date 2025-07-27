@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1094165146647",
+    "firebase_url": "https://rovero-9059c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "rovero-9059c",
+    "storage_bucket": "rovero-9059c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094165146647:android:fe9804bc1c074ab6700052",
+        "android_client_info": {
+          "package_name": "com.example.roverosong"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUn0szc7u-G6jjcOy0APvSF440sCxkw-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
