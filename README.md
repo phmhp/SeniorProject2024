@@ -97,7 +97,7 @@ roslaunch localization_correction icp.launch #icp 위치 추정 launch 실행
 ```
 
 ## ICP 기반 위치 추정
-<img width="500" height="350" alt="image" src="https://github.com/user-attachments/assets/fa003330-5791-44be-8174-20604f86bd15" /> <img width="500" height="350" alt="image" src="https://github.com/user-attachments/assets/8422c2b7-0bb8-43a1-b56a-69944a14ac32" />
+<img width="400" height="250" alt="image" src="https://github.com/user-attachments/assets/fa003330-5791-44be-8174-20604f86bd15" /> <img width="400" height="250" alt="image" src="https://github.com/user-attachments/assets/8422c2b7-0bb8-43a1-b56a-69944a14ac32" />
 
 
 ### 목적
